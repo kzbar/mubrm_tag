@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "871440125670",
+    "firebase_url": "https://mubrm-tag.firebaseio.com",
+    "project_id": "mubrm-tag",
+    "storage_bucket": "mubrm-tag.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871440125670:android:d8e4ca5cdf5cf1c23ff527",
+        "android_client_info": {
+          "package_name": "com.mubrm_tag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871440125670-ria7fj8t7pjdu80pt9vk26fngsr0l2c3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mubrm_tag",
+            "certificate_hash": "6efd4775e5d3d92e5a836964238ff42d69a56bfd"
+          }
+        },
+        {
+          "client_id": "871440125670-hsjltf4iqgcrpmaocq454e6pdqofouoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvhWe7WXA2wbx0JIbgULPOhtQtzp1N6M8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871440125670-hsjltf4iqgcrpmaocq454e6pdqofouoc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

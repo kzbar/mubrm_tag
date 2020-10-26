@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.mubrm_tag",
+    "sha256_cert_fingerprints":
+    ["EC:07:B9:75:49:6A:E6:1D:D0:A2:04:38:2B:E2:BE:12:A9:CE:CD:67:CE:48:37:BC:05:4C:12:41:A9:9F:91:E9"]
+  }
+}]
