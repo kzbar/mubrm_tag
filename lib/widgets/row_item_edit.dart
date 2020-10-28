@@ -75,43 +75,47 @@ class _RowItem extends State<RowItem> {
                       controller: controller,
                       // initialValue: widget.media.value,
                     ),
-                    margin: EdgeInsets.only(left: 12,right: 12),
+                    margin: EdgeInsets.only(left: 3,right: 3),
                   ),
                 ),
               ),
               SizedBox(
-                width: 12,
+                width: 6,
               ),
-              IconButton(
-                  icon: Icon(Icons.clear_rounded),
-                  onPressed: () {
-                    SocialMedia media = SocialMedia(
-                      socialName: widget.media.socialName,
-                      id: widget.media.id,
-                      socialIcon: widget.media.socialIcon,
-                      socialIsSelect: false,
-                      socialAddedTo: false,
-                      socialLinkAndroid: widget.media.socialLinkAndroid,
-                      socialLinkWeb: widget.media.socialLinkWeb,
-                      socialLinkIos: widget.media.socialLinkIos,
-                      messageAR: widget.media.messageAR,
-                      messageEN: widget.media.messageEN,
+              InkWell(
+                child: Icon(Icons.clear_rounded),
+                onTap: (){
+                  SocialMedia media = SocialMedia(
+                    socialName: widget.media.socialName,
+                    id: widget.media.id,
+                    socialIcon: widget.media.socialIcon,
+                    socialIsSelect: false,
+                    socialAddedTo: false,
+                    socialLinkAndroid: widget.media.socialLinkAndroid,
+                    socialLinkWeb: widget.media.socialLinkWeb,
+                    socialLinkIos: widget.media.socialLinkIos,
+                    messageAR: widget.media.messageAR,
+                    messageEN: widget.media.messageEN,
 
-                      value: null,
-                    );
-                    // FirebaseFirestore.instance
-                    //     .collection('users')
-                    //     .doc(user.id)
-                    //     .collection('socialMediaSelectedList')
-                    //     .doc(widget.media.firebaseId)
-                    //     .update(media.toJson())
-                    //     .then((value) {
-                    // });
-                    setState(() {
-                      controller.text = '';
-                    });
+                    value: null,
+                  );
+                  // FirebaseFirestore.instance
+                  //     .collection('users')
+                  //     .doc(user.id)
+                  //     .collection('socialMediaSelectedList')
+                  //     .doc(widget.media.firebaseId)
+                  //     .update(media.toJson())
+                  //     .then((value) {
+                  // });
+                  setState(() {
+                    controller.text = '';
+                  });
 
-                  }),
+                },
+              ),
+              SizedBox(
+                width: 6,
+              ),
 
               InkWell(
                 onTap: (){

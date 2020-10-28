@@ -3,8 +3,10 @@
   "email": "البريد الالكتروني",
   "password": "كلمة المرور",
   "continueTo": "متابعة",
+  "continueWithGoogle": "متابعة عبر غوغل ",
   "doNotHaveAccount": "ليس لديك حساب",
   "singUp":"تسجيل حساب",
+  "errorTextFormat":"صيغة الاسم غير صحيح",
   "restPassword":"اعادة تهيئة كلمة المرور",
   "forgetPassword":"نسيت كلمة المرور",
   "errorTextRequired":"هذا الحقل فارغ يرجى ملئ الحقل",
@@ -45,7 +47,9 @@
   "dataUpdateSuccess":"تم تحديث البيانات بنجاح",
   "wrongPassword":"كلمة المرور غير صحيحة يرجى المحاولة مرة اخرى او استعادة كلمة المرور",
   "shareMyAccountSocial":"شارك {account}",
-  "shareMyAccountSocialMessage":"قم بزيارة حسابي  {account}"
+  "shareMyAccountSocialMessage":"قم بزيارة حسابي  {account}",
+  "makeProfilePublic":"اجعل الملف الشخصي عامًا",
+  "makeProfileMessage":"عندما يكون ملفك الشخصي عامًا. يمكن للآخرين الوصول إلى ملف التعريف الخاص بك باستخدام الرابط:"
 
 
 }

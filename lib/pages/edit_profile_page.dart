@@ -23,6 +23,7 @@ class _EditProfilePage extends State<EditProfilePage>
     with TickerProviderStateMixin {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   AnimationController _loginButtonController;
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Function function;
   File _image;
@@ -37,6 +38,7 @@ class _EditProfilePage extends State<EditProfilePage>
       key: _scaffoldKey,
       body: Stack(
         children: [
+          ///background page
           Container(
             height: 900,
             decoration: kBoxDecoration,
@@ -185,10 +187,15 @@ class _EditProfilePage extends State<EditProfilePage>
                                       user != null ? user.name : 'Non',
                                   cursorColor: Colors.black,
                                   style: kTextStyleEditText,
+                                  validators: [
+                                    FormBuilderValidators.pattern(
+                                        "^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]\$",
+                                        errorText: S.of(context).errorTextFormat),
+                                  ],
                                   decoration: InputDecoration(
                                       hintText: S.of(context).name,
                                       contentPadding: EdgeInsets.zero,
-                                      border: InputBorder.none),
+                                      border: InputBorder.none,),
                                 ),
                               ),
                               Container(
@@ -207,6 +214,7 @@ class _EditProfilePage extends State<EditProfilePage>
                                       : 'test@gmail.com',
                                   cursorColor: Colors.black,
                                   style: kTextStyleEditText,
+                                  onChanged: (text) {},
                                   decoration: InputDecoration(
                                       hintText: S.of(context).email,
                                       contentPadding: EdgeInsets.zero,
@@ -241,6 +249,53 @@ class _EditProfilePage extends State<EditProfilePage>
                     ],
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.only(left: 24, right: 24, top: 12),
+                  child: Row(
+                    children: [
+                      Text(
+                        S.of(context).makeProfilePublic,
+                        style: kTextStyle.copyWith(
+                            color: Colors.white, fontSize: 24),
+                      ),
+                      Expanded(
+                        child: FormBuilderSwitch(
+
+                          onChanged: (value) {},
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Colors.grey,
+                          attribute: 'value',
+                          label: Text(''),
+                          decoration: InputDecoration(
+                            border: InputBorder.none
+                          ),
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24,),
+                  child:                 Text(
+                    S.of(context).makeProfileMessage,
+                    textAlign: TextAlign.center,
+                    style: kTextStyle.copyWith(
+                        color: Colors.white70, fontSize: 16),
+                  ),
+
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24,top: 12),
+                  child:                 Text(
+                    'mubrmtag.com/#/goTo?account_id=${user.name}',
+                    textAlign: TextAlign.center,
+                    style: kTextStyle.copyWith(
+                        color: Colors.white70, fontSize: 16),
+                  ),
+
+                ),
+
                 SizedBox(
                   height: 12,
                 ),
@@ -251,7 +306,6 @@ class _EditProfilePage extends State<EditProfilePage>
                 ..._list.map((e) {
                   return RowItem(
                     media: e,
-
                   );
                 }).toList(),
                 SizedBox(
@@ -275,7 +329,8 @@ class _EditProfilePage extends State<EditProfilePage>
                         json: newMap,
                         success: (user) {
                           _stopAnimation();
-                          _showMessage(S.of(context).dataUpdateSuccess, context);
+                          _showMessage(
+                              S.of(context).dataUpdateSuccess, context);
                         },
                         fail: (error) {
                           _stopAnimation();

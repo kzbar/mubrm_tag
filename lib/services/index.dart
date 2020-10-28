@@ -10,13 +10,16 @@ abstract class BaseServices {
 
   Future<AppUser> login({Map<String, dynamic> json});
 
+  Future<User> singInGoogle({GoogleAuthCredential userCredential});
+
   Future<AppUser> upData({Map<String, dynamic> json});
 
   Future<User> singUp({Map<String, dynamic> json});
 
   Future<void> forgetPassword({Map<String, dynamic> json});
 
-  Future<AppUser> addUser({AppUser appUser,Map<String, dynamic> json});
+  Future<AppUser> addUser({AppUser appUser});
+
 
 
   Future<void> logout({String id});
@@ -36,7 +39,7 @@ class Services implements BaseServices {
 
   @override
   Future<AppUser> addUser({AppUser appUser,Map<String, dynamic> json}) {
-    return serviceApi.addUser(appUser: appUser,json: json);
+    return serviceApi.addUser(appUser: appUser);
   }
 
   @override
@@ -62,5 +65,10 @@ class Services implements BaseServices {
   Future<void> logout({String id}) {
     // TODO: implement logout
     return serviceApi.logout(id: id);
+  }
+
+  @override
+  Future<User> singInGoogle({GoogleAuthCredential userCredential}) {
+    return serviceApi.singInGoogle(userCredential: userCredential);
   }
 }

@@ -3,8 +3,10 @@
   "email": "Email",
   "password": "Password",
   "continueTo": "Continue",
+  "continueWithGoogle": "Continue with Google",
   "doNotHaveAccount": "Do Not Have Account",
   "singUp":"Create Account",
+  "errorTextFormat":"The format of the name is incorrect",
   "restPassword":"Password reset",
   "forgetPassword":"Forget password",
   "errorTextRequired":"This field is empty Please fill in the field",
@@ -45,7 +47,9 @@
   "dataUpdateSuccess":"The data has been successfully updated",
   "wrongPassword":"The password is invalid ",
   "shareMyAccountSocial":"Share {account}",
-  "shareMyAccountSocialMessage":"visit my account {account}"
+  "shareMyAccountSocialMessage":"visit my account {account}",
+  "makeProfilePublic":"Make profile public",
+  "makeProfileMessage":"when your profile is public . others can access your profile using the link : "
 
 
 }

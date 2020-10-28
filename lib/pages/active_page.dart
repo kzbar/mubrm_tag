@@ -85,7 +85,7 @@ class _ActivePage extends State<ActivePage>
                       _stream.listen((event) {
                         event.records.map((element) {
                           setState(() {});
-                          print(element.data);
+                          print(element);
                         }).toList();
                       });
 
@@ -97,6 +97,7 @@ class _ActivePage extends State<ActivePage>
                           once: true,
                           readerMode: NFCNormalReaderMode(noSounds: false));
                       stream.listen((NDEFTag tag) {
+
                         print('Has Wrote');
                         setWrote(
                             'https://mubrm-tag.web.app/#/goTo?account_id=${user.id}');

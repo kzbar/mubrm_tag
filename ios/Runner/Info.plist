@@ -63,7 +63,20 @@
 		<string>remote-notification</string>
 	</array>
 	<key>NFCReaderUsageDescription</key>
-    <string>...</string>
+    <string>Hold your Mubrm to the middle back of your phone to active it,Hold the Mubrm there until success popup appears!</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    			<!-- TODO Replace this value: -->
+    			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+    			<string>com.googleusercontent.apps.871440125670-fkiss6mv5oa3h0p3onqq44altvls03o6</string>
+    		</array>
+    	</dict>
+    </array>
 
 
 

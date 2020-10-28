@@ -55,12 +55,12 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
               debugShowCheckedModeBanner: true,
               onGenerateRoute: (settings) {
                 Uri uri = Uri.dataFromString(settings.name);
+                String path = uri.path.substring(2);
                 switch (uri.path) {
                   case ',/':
                     {
                       if (kIsWeb) {
-                        String param1 =
-                            uri.queryParameters['account_id'] ?? null;
+                        String param1 = uri.queryParameters['account_id'] ?? null;
                         return MaterialPageRoute(builder: (ccc) {
                           return WebPage(
                             accountId: param1,
@@ -71,24 +71,13 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
                       }
                     }
                     break;
-                  case ',/goTo':
-                    {
-                      String param1 = uri.queryParameters['account_id'] ?? null;
-                      return MaterialPageRoute(builder: (ccc) {
-                        return WebPage(
-                          accountId: param1,
-                        );
-                      });
-                    }
-                    break;
                   default:
                     {
                       if (kIsWeb) {
-                        String param1 =
-                            uri.queryParameters['account_id'] ?? null;
+                        String param1 = uri.queryParameters['account_id'] ?? null;
                         return MaterialPageRoute(builder: (ccc) {
                           return WebPage(
-                            accountId: param1,
+                            accountId: path,
                           );
                         });
                       } else {

@@ -48,8 +48,8 @@ class _DrawerWidget extends State<DrawerWidget>{
    var kListMenu = [
       {'icon': 'home.png', "page": "home_page", "title": S.of(context).mainPage},
       {'icon': 'user.png', "page": "edit_page", "title": S.of(context).myProfile},
-      {'icon': 'icon.png', "page": "active_page", "title": S.of(context).activeMubrm},
-      {'icon': 'icon.png', "page": "active_page_phone", "title": S.of(context).activeMubrmPhone},
+      {'icon': 'active.png', "page": "active_page", "title": S.of(context).activeMubrm},
+      {'icon': 'miniActive.png', "page": "active_page_phone", "title": S.of(context).activeMubrmPhone},
       {'icon': 'share.png', "page": "share", "title": S.of(context).shareApp},
       {'icon': 'exit.png', "page": "exit", "title": S.of(context).exit},
     ];

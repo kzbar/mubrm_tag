@@ -5,6 +5,7 @@ import 'package:mubrm_tag/confing/general.dart';
 class AppUser {
   String id;
   String name;
+  String nameId;
   String email;
   String phoneNumber;
   String token;
@@ -12,12 +13,14 @@ class AppUser {
   Map<String,dynamic> socialMediaSelected;
   String tenantId;
   bool loggedIn;
+  bool profileIsPublic;
   Timestamp created;
 
   AppUser.fromFirebaseEmailFirstTime(User user, Map<String, dynamic> map) {
     try {
       id = user.uid;
       name = map['name'];
+      nameId = map['name'].toString().replaceAll(' ', '_').toLowerCase();
       email = user.email;
       tenantId = user.tenantId;
       phoneNumber = user.phoneNumber;
@@ -26,6 +29,7 @@ class AppUser {
       loggedIn = true;
       created = Timestamp.now();
       socialMediaSelected = map['socialMediaSelected'];
+      profileIsPublic= map['profileIsPublic'] ?? false;
     } catch (error) {
       printLog('AppUserClass-fromFirebaseEmailFirstTime', error.toString());
     }
@@ -34,6 +38,7 @@ class AppUser {
     try {
       id = user.uid;
       name = map['name'];
+      nameId = map['nameId'];
       email = user.email;
       tenantId = user.tenantId;
       phoneNumber = user.phoneNumber;
@@ -41,6 +46,8 @@ class AppUser {
       picture = map['image'];
       loggedIn = true;
       socialMediaSelected = map['socialMediaSelected'];
+      profileIsPublic= map['profileIsPublic'] ?? false;
+
     } catch (error) {
       printLog('AppUserClass-fromFirebaseEmailLogin', error.toString());
     }
@@ -53,11 +60,12 @@ class AppUser {
       email = map['email'];
       tenantId = map['tenantId'];
       phoneNumber = map['phoneNumber'];
+      nameId = map['nameId'];
       token = map['token'];
       picture = map['picture'];
       loggedIn = map['loggedIn'];
       socialMediaSelected = map['socialMediaSelected'];
-
+      profileIsPublic= map['profileIsPublic'] ?? false;
     }catch(error){
       printLog('AppUserClass-fromFireStoreDataBase', error.toString());
     }
@@ -76,6 +84,25 @@ class AppUser {
       'created': created,
       'token': token,
       'socialMediaSelected': socialMediaSelected,
+      'profileIsPublic': profileIsPublic,
+      'nameId':nameId
     };
   }
+  Map<String, dynamic> appUserToJsonFirstTimeWithRandomNameId(String string) {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'picture': picture,
+      'tenantId': tenantId,
+      'loggedIn': loggedIn,
+      'created': created,
+      'token': token,
+      'socialMediaSelected': socialMediaSelected,
+      'profileIsPublic': profileIsPublic,
+      'nameId':nameId+string
+    };
+  }
+
 }

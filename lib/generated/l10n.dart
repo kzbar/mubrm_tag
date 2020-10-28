@@ -73,6 +73,16 @@ class S {
     );
   }
 
+  /// `Continue with Google`
+  String get continueWithGoogle {
+    return Intl.message(
+      'Continue with Google',
+      name: 'continueWithGoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Do Not Have Account`
   String get doNotHaveAccount {
     return Intl.message(
@@ -88,6 +98,16 @@ class S {
     return Intl.message(
       'Create Account',
       name: 'singUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The format of the name is incorrect`
+  String get errorTextFormat {
+    return Intl.message(
+      'The format of the name is incorrect',
+      name: 'errorTextFormat',
       desc: '',
       args: [],
     );
@@ -500,6 +520,26 @@ class S {
       name: 'shareMyAccountSocialMessage',
       desc: '',
       args: [account],
+    );
+  }
+
+  /// `Make profile public`
+  String get makeProfilePublic {
+    return Intl.message(
+      'Make profile public',
+      name: 'makeProfilePublic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `when your profile is public . others can access your profile using the link : `
+  String get makeProfileMessage {
+    return Intl.message(
+      'when your profile is public . others can access your profile using the link : ',
+      name: 'makeProfileMessage',
+      desc: '',
+      args: [],
     );
   }
 }
