@@ -288,14 +288,13 @@ class _EditProfilePage extends State<EditProfilePage>
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24,top: 12),
                   child:                 Text(
-                    'mubrmtag.com/#/goTo?account_id=${user.name}',
+                    'mubrmtag.com/#/${user.nameId}',
                     textAlign: TextAlign.center,
                     style: kTextStyle.copyWith(
                         color: Colors.white70, fontSize: 16),
                   ),
 
                 ),
-
                 SizedBox(
                   height: 12,
                 ),
