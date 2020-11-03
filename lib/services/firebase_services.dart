@@ -51,15 +51,15 @@ class FireBaseServices implements BaseServices {
         return AppUser.fromFireStoreDataBase(documentSnapshot.data());
       }
     } on PlatformException catch (error) {
-      printLog(tag, error);
+      printLog(tag, error.message);
       rethrow;
     } catch (error) {
-      printLog(tag, error.message);
+      printLog(tag, error.toString());
       rethrow;
     }
   }
   Future<bool> checkUserNameIsExist({String nameId}) async{
-    bool isExit;
+    bool isExit = false;
     await FirebaseFirestore.instance.collection('users').get().then((value) {
       for(int i = 0 ; i < value.docs.length ; i++){
         if(value.docs[i].data().containsValue(nameId)){

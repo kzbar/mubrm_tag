@@ -223,10 +223,10 @@ class S {
     );
   }
 
-  /// `Active MUBRM MINI`
+  /// `Active MINI MUBRM`
   String get activeMubrmPhone {
     return Intl.message(
-      'Active MUBRM MINI',
+      'Active MINI MUBRM',
       name: 'activeMubrmPhone',
       desc: '',
       args: [],
@@ -393,10 +393,10 @@ class S {
     );
   }
 
-  /// `Phone Number Active success`
+  /// `Active phone number`
   String get phoneNumberSuccess {
     return Intl.message(
-      'Phone Number Active success',
+      'Active phone number',
       name: 'phoneNumberSuccess',
       desc: '',
       args: [],
@@ -413,11 +413,21 @@ class S {
     );
   }
 
-  /// `Device Not Support App`
+  /// `Please open NFC feature first so that the app can read and write on the chip`
   String get deviceNotSupportApp {
     return Intl.message(
-      'Device Not Support App',
+      'Please open NFC feature first so that the app can read and write on the chip',
       name: 'deviceNotSupportApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please open the AirPod feature first so that the app can read and write on the chip`
+  String get deviceNotSupportAppIos {
+    return Intl.message(
+      'Please open the AirPod feature first so that the app can read and write on the chip',
+      name: 'deviceNotSupportAppIos',
       desc: '',
       args: [],
     );

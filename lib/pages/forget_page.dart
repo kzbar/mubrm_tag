@@ -71,6 +71,8 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> with TickerProviderS
                   height: 50,
                   decoration: kBoxDecorationEditText,
                   child: FormBuilderTextField(
+                    keyboardType: TextInputType.emailAddress,
+
                     attribute: 'email',
                     cursorColor: Colors.black,
                     style: kTextStyleEditText,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mubrm_tag/anim/sprite_painter.dart';
 import 'package:mubrm_tag/confing/general.dart';
@@ -23,7 +25,7 @@ class _ActivePage extends State<ActivePage>
   bool isScan = false;
   bool wrote = false;
   String url = '';
-  Future<String> phoneNumber;
+  Future<String> urlAccount;
   Future<bool> hasWrote;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   AnimationController _loginButtonController;
@@ -70,49 +72,53 @@ class _ActivePage extends State<ActivePage>
                   child: Text(
                     _supportsNFC
                         ? S.of(context).deviceSupportApp
-                        : S.of(context).deviceNotSupportApp,
+                        : Platform.isAndroid ?S.of(context).deviceNotSupportApp :S.of(context).deviceNotSupportAppIos,
                     style: kTextStyle.copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Visibility(
+                  visible: _supportsNFC,
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin:
+                    EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 24),
+                    child: InkWell(
+                      onTap: () {
+                        _playAnimation();
+                        // Stream<NDEFMessage> _stream = NFC.readNDEF();
+                        // _stream.listen((event) {
+                        //   event.records.map((element) {
+                        //     setState(() {});
+                        //     print(element);
+                        //   }).toList();
+                        // });
+                        NDEFMessage newMessage = NDEFMessage.withRecords([
+                          NDEFRecord.uri(Uri.parse(
+                              'https://mubrmtag.com/#/${user.nameId}'))
+                        ]);
+                        Stream<NDEFTag> stream = NFC.writeNDEF(newMessage,
+                            once: false,
+                            readerMode: NFCNormalReaderMode(noSounds: false));
+                        stream.listen((NDEFTag tag) {
+                          print('Has Wrote');
+                          setWrote('https://mubrmtag.com/#/${user.nameId}');
+                          _stopAnimation();
+                        });
+                        //
+                      },
+                      child: StaggerAnimation(
+                        begin: 300,
+                        buttonController: _loginButtonController.view,
+                        titleButton: wrote
+                            ? S.of(context).accountActive
+                            : S.of(context).accountNotActive,
+                      ),
+                    ),
                   ),
                 ),
                 Container(
-                  alignment: Alignment.center,
-                  margin:
-                      EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 24),
-                  child: InkWell(
-                    onTap: () {
-                      _playAnimation();
-                      Stream<NDEFMessage> _stream = NFC.readNDEF();
-                      _stream.listen((event) {
-                        event.records.map((element) {
-                          setState(() {});
-                          print(element);
-                        }).toList();
-                      });
-
-                      NDEFMessage newMessage = NDEFMessage.withRecords([
-                        NDEFRecord.uri(Uri.parse(
-                            'https://mubrm-tag.web.app/#/goTo?account_id=${user.id}'))
-                      ]);
-                      Stream<NDEFTag> stream = NFC.writeNDEF(newMessage,
-                          once: true,
-                          readerMode: NFCNormalReaderMode(noSounds: false));
-                      stream.listen((NDEFTag tag) {
-
-                        print('Has Wrote');
-                        setWrote(
-                            'https://mubrm-tag.web.app/#/goTo?account_id=${user.id}');
-                        _stopAnimation();
-                      });
-                      //
-                    },
-                    child: StaggerAnimation(
-                      begin: 300,
-                      buttonController: _loginButtonController.view,
-                      titleButton: wrote
-                          ? S.of(context).accountActive
-                          : S.of(context).accountNotActive,
-                    ),
-                  ),
+                  child: Text(url,style: kTextStyle.copyWith(color: Colors.white,fontSize: 12),),
                 ),
                 Container(
                   height: 400,
@@ -143,7 +149,11 @@ class _ActivePage extends State<ActivePage>
       ),
     );
   }
-
+  @override
+  void dispose() {
+    _loginButtonController.dispose();
+    super.dispose();
+  }
   @override
   void initState() {
     AppUser user = Provider.of<UserModel>(context, listen: false).userApp;
@@ -157,10 +167,10 @@ class _ActivePage extends State<ActivePage>
         return (prefs.getBool('hasWroteAccount') ?? false);
       });
       wrote = await hasWrote;
-      phoneNumber = _prefs.then((SharedPreferences prefs) {
+      urlAccount = _prefs.then((SharedPreferences prefs) {
         return (prefs.getString('url') ?? null);
       });
-      url = await phoneNumber;
+      url = await urlAccount;
     });
     _loginButtonController = AnimationController(
         duration: Duration(milliseconds: 1500), vsync: this);
@@ -168,7 +178,11 @@ class _ActivePage extends State<ActivePage>
     super.initState();
   }
 
+
   setWrote(url) async {
+    setState(() {
+      wrote = true;
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasWroteAccount', true);
     await prefs.setString('url', url);

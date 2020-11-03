@@ -81,7 +81,7 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                   height: 50,
                   decoration: kBoxDecorationEditText,
                   child: FormBuilderTextField(
-                    controller: controller,
+                    keyboardType: TextInputType.emailAddress,
                     attribute: 'email',
                     cursorColor: Colors.black,
                     style: kTextStyleEditText,

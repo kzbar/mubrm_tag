@@ -162,9 +162,9 @@ const kSocialList = [
   {
     "id": 2,
     "socialName": 'Twitter',
-    "socialLinkIos": 'twitter:///user?screen_name=',
-    "socialLinkAndroid": 'twitter:///user?screen_name=',
-    "socialLinkWeb": 'twitter:///user?screen_name=',
+    "socialLinkIos": 'https://twitter.com/',
+    "socialLinkAndroid": 'https://twitter.com/',
+    "socialLinkWeb": 'https://twitter.com/',
     "socialIcon": '2',
     "socialIsSelect": false,
     "socialAddedTo": false,
@@ -205,9 +205,9 @@ const kSocialList = [
   {
     "id":5,
     "socialName": 'Snapchat',
-    "socialLinkIos": 'snapchat://add/',
-    "socialLinkAndroid": 'snapchat://add/',
-    "socialLinkWeb": 'snapchat://add/',
+    "socialLinkIos": 'https://snapchat.com/add/',
+    "socialLinkAndroid": 'https://snapchat.com/add/',
+    "socialLinkWeb": 'https://snapchat.com/add/',
     "socialIcon": '4',
     "socialAddedTo": false,
     "socialIsSelect": false,
@@ -228,7 +228,7 @@ const kSocialList = [
     "socialAddedTo": false,
     "value": null,
     "messageAR":'افتح تطبيق التيك توك ثم اضغط على "صفحتي" سيضهر اسم المستخدم تحت الصورة الشخصية.',
-    "messageEN":'Open Tik Tok and tap your profile picture in the top left corner Your username is below your Snapchat name.'
+    "messageEN":'Open Tik Tok and tap your profile picture in the top left corner Your username is below your Tik Tok name.'
 
 
   },
@@ -243,16 +243,16 @@ const kSocialList = [
     "socialAddedTo": false,
     "value": null,
     "messageAR":'افتح الواتساب واذهب الى الاعدادات اضغط على ملفك الشخصي في الاعلى وقم بنسخ ولصق الرقم مع رمز البلد.',
-    "messageEN":'Open Telegram and tap your profile picture in the top left corner Your username is below your Snapchat name.'
+    "messageEN":'Open Telegram and tap your profile picture in the top left corner Your username is below your Telegram name.'
 
 
   },
   {
     "id": 8,
     "socialName": 'Facebook',
-    "socialLinkIos": 'https://www.facebook.com/',
-    "socialLinkAndroid": 'https://www.facebook.com/',
-    "socialLinkWeb": 'https://www.facebook.com/',
+    "socialLinkIos": '',
+    "socialLinkAndroid": '',
+    "socialLinkWeb": '',
     "socialIcon": '1',
     "socialIsSelect": false,
     "socialAddedTo": false,
@@ -280,9 +280,9 @@ const kSocialList = [
   {
     "id":10,
     "socialName": 'YouTube',
-    "socialLinkIos": 'https://www.youtube.com/channel/',
-    "socialLinkAndroid": 'https://www.youtube.com/channel/',
-    "socialLinkWeb": 'https://www.youtube.com/channel/',
+    "socialLinkIos": '',
+    "socialLinkAndroid": '',
+    "socialLinkWeb": '',
     "socialIcon": '10',
     "socialIsSelect": false,
     "socialAddedTo": false,
@@ -297,7 +297,7 @@ const kSocialList = [
     "socialName": 'custom link',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
-    "socialLinkWeb": '',
+    "socialLinkWeb": 'https://',
     "socialIcon": '12',
     "socialIsSelect": false,
     "socialAddedTo": false,
@@ -309,10 +309,10 @@ const kSocialList = [
   },
   {
     "id":11,
-    "socialName": 'Skyp',
-    "socialLinkIos": 'skype:',
-    "socialLinkAndroid": 'skype:',
-    "socialLinkWeb": 'skype:',
+    "socialName": 'Skype',
+    "socialLinkIos": '',
+    "socialLinkAndroid": '',
+    "socialLinkWeb": '',
     "socialIcon": '11',
     "socialIsSelect": false,
     "socialAddedTo": false,
@@ -324,7 +324,7 @@ const kSocialList = [
   },
   {
     "id":13,
-    "socialName": 'Asiahawala',
+    "socialName": 'PayPal',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
     "socialLinkWeb": ':',
@@ -334,8 +334,6 @@ const kSocialList = [
     "value": null,
     "messageAR":'',
     "messageEN":''
-
-
   },
   {
     "id":14,
@@ -349,14 +347,13 @@ const kSocialList = [
     "value": null,
     "messageAR":'',
     "messageEN":''
-
   },
   {
     "id":15,
     "socialName": 'LinkedIn',
-    "socialLinkIos": 'http://ca.linkedin.com/in/',
-    "socialLinkAndroid": 'http://ca.linkedin.com/in/',
-    "socialLinkWeb": 'http://ca.linkedin.com/in/',
+    "socialLinkIos": '',
+    "socialLinkAndroid": '',
+    "socialLinkWeb": '',
     "socialIcon": '15',
     "socialIsSelect": false,
     "socialAddedTo": false,

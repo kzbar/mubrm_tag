@@ -34,6 +34,7 @@ class _EditProfilePage extends State<EditProfilePage>
   @override
   Widget build(BuildContext context) {
     AppUser user = Provider.of<UserModel>(context, listen: false).userApp;
+    print('profileIsPublic ${user.profileIsPublic}');
     return Scaffold(
       key: _scaffoldKey,
       body: Stack(
@@ -182,6 +183,7 @@ class _EditProfilePage extends State<EditProfilePage>
                                 height: 50,
                                 decoration: kBoxDecorationEditText,
                                 child: FormBuilderTextField(
+                                  keyboardType: TextInputType.emailAddress,
                                   attribute: 'name',
                                   initialValue:
                                       user != null ? user.name : 'Non',
@@ -190,12 +192,14 @@ class _EditProfilePage extends State<EditProfilePage>
                                   validators: [
                                     FormBuilderValidators.pattern(
                                         "^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]\$",
-                                        errorText: S.of(context).errorTextFormat),
+                                        errorText:
+                                            S.of(context).errorTextFormat),
                                   ],
                                   decoration: InputDecoration(
-                                      hintText: S.of(context).name,
-                                      contentPadding: EdgeInsets.zero,
-                                      border: InputBorder.none,),
+                                    hintText: S.of(context).name,
+                                    contentPadding: EdgeInsets.zero,
+                                    border: InputBorder.none,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -208,6 +212,8 @@ class _EditProfilePage extends State<EditProfilePage>
                                 height: 50,
                                 decoration: kBoxDecorationEditText,
                                 child: FormBuilderTextField(
+                                  keyboardType: TextInputType.emailAddress,
+
                                   attribute: 'email',
                                   initialValue: user != null
                                       ? user.email
@@ -231,6 +237,8 @@ class _EditProfilePage extends State<EditProfilePage>
                                 height: 50,
                                 decoration: kBoxDecorationEditText,
                                 child: FormBuilderTextField(
+                                  keyboardType: TextInputType.emailAddress,
+
                                   attribute: 'password',
                                   obscureText: true,
                                   cursorColor: Colors.black,
@@ -260,39 +268,47 @@ class _EditProfilePage extends State<EditProfilePage>
                       ),
                       Expanded(
                         child: FormBuilderSwitch(
-
-                          onChanged: (value) {},
+                          initialValue: user.profileIsPublic,
+                          onChanged: (value) {
+                            makeProfilePublic(user.id, value);
+                          },
                           activeColor: Theme.of(context).primaryColor,
                           inactiveThumbColor: Colors.grey,
                           attribute: 'value',
                           label: Text(''),
-                          decoration: InputDecoration(
-                            border: InputBorder.none
-                          ),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          decoration: InputDecoration(border: InputBorder.none),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
                         ),
                       )
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 24,right: 24,),
-                  child:                 Text(
+                  margin: EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                  ),
+                  child: Text(
                     S.of(context).makeProfileMessage,
                     textAlign: TextAlign.center,
                     style: kTextStyle.copyWith(
                         color: Colors.white70, fontSize: 16),
                   ),
-
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 24,right: 24,top: 12),
-                  child:                 Text(
+                  margin: EdgeInsets.only(left: 24, right: 24, top: 12),
+                  child: Text(
                     'mubrmtag.com/#/${user.nameId}',
                     textAlign: TextAlign.center,
                     style: kTextStyle.copyWith(
-                        color: Colors.white70, fontSize: 16),
+                        color: Colors.white, fontSize: 16),
                   ),
+                ),
+                Container(
+                  color: Theme.of(context).primaryColor,
+                  height: 1,
+                  margin: EdgeInsets.only(left: 50, right: 50, bottom: 6,top: 6),
 
                 ),
                 SizedBox(
@@ -360,6 +376,15 @@ class _EditProfilePage extends State<EditProfilePage>
   void dispose() {
     _loginButtonController.dispose();
     super.dispose();
+  }
+
+  void makeProfilePublic(userId, value) async {
+    Map<String, dynamic> data = {'id': userId, 'profileIsPublic': value,'password':''};
+    Provider.of<UserModel>(context, listen: false).upData(
+        json: data,
+        success: (s) {},
+        fail: (error) {},
+        platformException: (error) {});
   }
 
   @override

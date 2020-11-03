@@ -125,6 +125,7 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
                                 height: 50,
                                 decoration: kBoxDecorationEditText,
                                 child: FormBuilderTextField(
+                                  keyboardType: TextInputType.emailAddress,
                                   validators: [
                                     FormBuilderValidators.required(
                                         errorText:
@@ -165,6 +166,7 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
                                             S.of(context).errorTextEmail),
                                   ],
                                   attribute: 'email',
+                                  keyboardType: TextInputType.emailAddress,
                                   cursorColor: Colors.black,
                                   style: kTextStyleEditText,
                                   decoration: InputDecoration(
@@ -331,12 +333,22 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
             Provider.of<UserModel>(context, listen: false).addUser(
                 user: _user,
                 fail: (error) {
+                  _stopAnimation('singUp');
+                  _showMessage(error.toString(), context);
                   printLog('addUser', error.toString());
                 },
                 success: (AppUser appUser) {
                   Navigator.pushReplacement(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
-                });
+                },platformException: (error){
+              _stopAnimation('singUp');
+
+              _showMessage(error.toString(), context);
+
+              printLog('addUser', error.toString());
+
+            });
+
           }
         },
         fail: (error) {

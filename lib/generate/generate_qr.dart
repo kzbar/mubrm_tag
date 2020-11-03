@@ -82,7 +82,7 @@ class GenerateScreenState extends State<GenerateScreen> {
               child: RepaintBoundary(
                 key: globalKey,
                 child: QrImage(
-                  data: 'https://mubrm-tag.web.app/#/goTo?account_id=${widget.id}',
+                  data: 'https://mubrmtag.com/#/${widget.id}',
                   size: 0.5 * bodyHeight,
                 ),
               ),

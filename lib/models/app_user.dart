@@ -13,14 +13,14 @@ class AppUser {
   Map<String,dynamic> socialMediaSelected;
   String tenantId;
   bool loggedIn;
-  bool profileIsPublic;
+  bool profileIsPublic = false;
   Timestamp created;
 
   AppUser.fromFirebaseEmailFirstTime(User user, Map<String, dynamic> map) {
     try {
       id = user.uid;
       name = map['name'];
-      nameId = map['name'].toString().replaceAll(' ', '_').toLowerCase();
+      nameId = user.email.split('@')[0];
       email = user.email;
       tenantId = user.tenantId;
       phoneNumber = user.phoneNumber;
@@ -34,11 +34,12 @@ class AppUser {
       printLog('AppUserClass-fromFirebaseEmailFirstTime', error.toString());
     }
   }
+
   AppUser.fromFirebaseEmailLogin(User user, Map<String, dynamic> map) {
     try {
       id = user.uid;
       name = map['name'];
-      nameId = map['nameId'];
+      nameId = user.email.split('@')[0];
       email = user.email;
       tenantId = user.tenantId;
       phoneNumber = user.phoneNumber;
@@ -46,7 +47,7 @@ class AppUser {
       picture = map['image'];
       loggedIn = true;
       socialMediaSelected = map['socialMediaSelected'];
-      profileIsPublic= map['profileIsPublic'] ?? false;
+      profileIsPublic= map['profileIsPublic'] ;
 
     } catch (error) {
       printLog('AppUserClass-fromFirebaseEmailLogin', error.toString());
@@ -65,7 +66,7 @@ class AppUser {
       picture = map['picture'];
       loggedIn = map['loggedIn'];
       socialMediaSelected = map['socialMediaSelected'];
-      profileIsPublic= map['profileIsPublic'] ?? false;
+      profileIsPublic= map['profileIsPublic'];
     }catch(error){
       printLog('AppUserClass-fromFireStoreDataBase', error.toString());
     }
@@ -88,6 +89,7 @@ class AppUser {
       'nameId':nameId
     };
   }
+
   Map<String, dynamic> appUserToJsonFirstTimeWithRandomNameId(String string) {
     return {
       'id': id,

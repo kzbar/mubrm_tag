@@ -1,4 +1,5 @@
 import 'dart:async';
+import "dart:convert" show JsonUtf8Encoder, json, jsonDecode, jsonEncode, latin1, utf8;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,11 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
               onGenerateRoute: (settings) {
                 Uri uri = Uri.dataFromString(settings.name);
                 String path = uri.path.substring(2);
+                List<int> bytes = utf8.encode(path);
+                String body = utf8.decode(bytes);
+                Map<String,dynamic> data= {'url':body};
+                print(data);
+
                 switch (uri.path) {
                   case ',/':
                     {
@@ -74,7 +80,6 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
                   default:
                     {
                       if (kIsWeb) {
-                        String param1 = uri.queryParameters['account_id'] ?? null;
                         return MaterialPageRoute(builder: (ccc) {
                           return WebPage(
                             accountId: path,

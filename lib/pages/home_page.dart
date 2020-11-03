@@ -49,7 +49,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SocialMedia currentMedia;
   Map<String, dynamic> header;
-  List<SocialMedia> _list =[];
+  List<SocialMedia> _list = [];
   int idHeader;
 
   @override
@@ -71,7 +71,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
         Tween<double>(begin: 0.0, end: 0.25).animate(menuController);
     Provider.of<DatabaseModel>(context, listen: false).getSocialMediaList();
 
-
     super.initState();
   }
 
@@ -90,7 +89,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   void didChangeDependencies() {
     AppUser user = Provider.of<UserModel>(context, listen: false).userApp;
     FirebaseProvider.listenToMedias((newMessage) {
-        currentMedia = newMessage;
+      currentMedia = newMessage;
     }, user.id);
     super.didChangeDependencies();
   }
@@ -167,43 +166,57 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                           .collection('users')
                           .doc(user.id)
                           .snapshots(),
-                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if(snapshot.hasData){
-                        Map<String,dynamic> map =snapshot.data.data()['socialMediaSelected'] ?? null;
-                        if(map!= null){
-                          SocialMedia me = SocialMedia.fromJsonFireStore(map,snapshot.data.id);
-                          return InkWell(
-                            child: HeaderItemIcon(media: me,),
-                            onTap: (){
-                              showSheet(context, me, false, user);
-                            },
-                          );
-                        }else{
-                          return Container(
-                            margin: EdgeInsets.only(top: 6, bottom: 24),
-                            child: Text('لا يوجد حساب افتراضي حدد حساب الآن',style: kTextStyle.copyWith(color: Colors.red),),);
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          Map<String, dynamic> map =
+                              snapshot.data.data()['socialMediaSelected'] ??
+                                  null;
+                          if (map != null) {
+                            SocialMedia me = SocialMedia.fromJsonFireStore(
+                                map, snapshot.data.id);
+                            return InkWell(
+                              child: HeaderItemIcon(
+                                media: me,
+                              ),
+                              onTap: () {
+                                showSheet(context, me, false, user);
+                              },
+                            );
+                          } else {
+                            return Container(
+                              margin: EdgeInsets.only(top: 6, bottom: 24),
+                              child: Text(
+                                'لا يوجد حساب افتراضي حدد حساب الآن',
+                                style: kTextStyle.copyWith(color: Colors.red),
+                              ),
+                            );
+                          }
+                        } else {
+                          return Container();
                         }
-                      }else{
-                        return Container();
-                      }
-                    },),
+                      },
+                    ),
                     StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection('users')
-                          .doc(user.id).collection('socialMediaSelectedList')
+                          .doc(user.id)
+                          .collection('socialMediaSelectedList')
                           .snapshots(),
-                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if(snapshot.hasData){
-                          _list = snapshot.data.docs.where((element){
-                            return element.data()['socialAddedTo'] && element.data()['id'] != currentMedia.id;
-                          }).map((e){
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          _list = snapshot.data.docs.where((element) {
+                            return element.data()['socialAddedTo'] &&
+                                element.data()['id'] != currentMedia.id;
+                          }).map((e) {
                             print(e.id);
-                            return SocialMedia.fromJsonFireStore(e.data(), e.id);
+                            return SocialMedia.fromJsonFireStore(
+                                e.data(), e.id);
                           }).toList();
                           return ReorderableWrap(
                               needsLongPressDraggable: false,
-                              buildDraggableFeedback:
-                                  (context, cox, child) {
+                              buildDraggableFeedback: (context, cox, child) {
                                 return Material(
                                   color: Colors.transparent,
                                   child: child,
@@ -214,8 +227,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                   showSheetAddLink(context, user);
                                 },
                                 child: FooterItemIcon(
-                                  media:
-                                  SocialMedia.fromJson(kFooterIcon),
+                                  media: SocialMedia.fromJson(kFooterIcon),
                                 ),
                               ),
                               runSpacing: 12,
@@ -224,24 +236,33 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                               onReorder: _onReorder,
                               children: _list.isNotEmpty
                                   ? _list.map((e) {
-                                SocialMedia me =e;
-                                return InkWell(
-                                  key: ObjectKey(me),
-                                  onTap: () {
-                                    showSheetForList(context, me, false, user,currentMedia);
-                                  },
-                                  child: ItemIcon(
-                                    media: me,
-                                    withFilter:
-                                    me.socialIsSelect,
-                                  ),
-                                );
-                              }).toList()
+                                      SocialMedia me = e;
+                                      return InkWell(
+                                        key: ObjectKey(me),
+                                        onTap: () {
+                                          showSheetForList(context, me, false,
+                                              user, currentMedia);
+                                        },
+                                        child: ItemIcon(
+                                          media: me,
+                                          withFilter: user.profileIsPublic
+                                              ? true
+                                              : me.socialIsSelect,
+                                        ),
+                                      );
+                                    }).toList()
                                   : []);
-                        }else{
-                          return Container(child: Center(child: CircularProgressIndicator(strokeWidth: 1,),),);
+                        } else {
+                          return Container(
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 1,
+                              ),
+                            ),
+                          );
                         }
-                      },),
+                      },
+                    ),
                     SizedBox(
                       height: 48,
                     )
@@ -265,7 +286,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                       child: RotationTransition(
                         turns: menuAnimation,
                         child: Container(
-                          margin: EdgeInsets.only(left: 24,right: 24),
+                          margin: EdgeInsets.only(left: 24, right: 24),
                           alignment: Alignment.centerLeft,
                           child: Image.asset(
                             'images/PNG/menu.png',
@@ -277,8 +298,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                     ),
                     Spacer(),
                     Container(
-                      margin: EdgeInsets.only(right: 12,left: 12),
-
+                      margin: EdgeInsets.only(right: 12, left: 12),
                       child: Column(
                         children: [
                           GestureDetector(
@@ -291,20 +311,24 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ),
                             onTap: () {
-                              share(ref:'https://mubrm-tag.web.app/#/goTo?account_id=${user.id}',context: context);
-
+                              share(
+                                  ref: 'https://mubrmtag.com/#/${user.nameId}',
+                                  context: context);
                             },
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 6),
-                            child: Text(S.of(context).shareMyAccount,style: kTextStyle.copyWith(color: Colors.black,fontSize: 10),),
+                            child: Text(
+                              S.of(context).shareMyAccount,
+                              style: kTextStyle.copyWith(
+                                  color: Colors.black, fontSize: 10),
+                            ),
                           )
                         ],
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                       ),
                     ),
-
                   ],
                 ),
               )),
@@ -352,7 +376,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                           context,
                           MaterialPageRoute(
                               builder: (context) => GenerateScreen(
-                                    id: user.id,
+                                    id: user.nameId,
                                   )),
                         );
 
@@ -401,17 +425,24 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  void showSheetForList(context, SocialMedia _media, bool newAdd, AppUser user,SocialMedia last) {
+  void showSheetForList(context, SocialMedia _media, bool newAdd, AppUser user,
+      SocialMedia last) {
     print(_media.toRawJson());
     _scaffoldKey.currentState.showBottomSheet((context) {
-      return SheetEditForSocialList(media: _media,newAdd: newAdd,lastMediaSelected: last,);
+      return SheetEditForSocialList(
+        media: _media,
+        newAdd: newAdd,
+        lastMediaSelected: last,
+      );
     });
   }
 
   void showSheet(context, SocialMedia _media, bool newAdd, AppUser user) {
     print(_media.toRawJson());
-     _scaffoldKey.currentState.showBottomSheet((context) {
-      return SheetEditForSocialMediaSelected(media: _media,);
+    _scaffoldKey.currentState.showBottomSheet((context) {
+      return SheetEditForSocialMediaSelected(
+        media: _media,
+      );
     });
   }
 
@@ -450,21 +481,26 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             Expanded(
                 child: Container(
               child: FutureBuilder(
-                future: FirebaseFirestore.instance.collection('users').doc(user.id).collection('socialMediaSelectedList').get(),
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.id)
+                    .collection('socialMediaSelectedList')
+                    .get(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
                     return GridView.builder(
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (BuildContext context, int index) {
-                        SocialMedia me =
-                            SocialMedia.fromJsonFireStore(snapshot.data.docs[index].data(),snapshot.data.docs[index].id);
+                        SocialMedia me = SocialMedia.fromJsonFireStore(
+                            snapshot.data.docs[index].data(),
+                            snapshot.data.docs[index].id);
                         return InkWell(
                           onTap: () async {
                             if (!me.socialAddedTo) {
                               Navigator.of(context).pop();
-                              showSheetForList(context, me,
-                                  true, user,currentMedia);
+                              showSheetForList(
+                                  context, me, true, user, currentMedia);
                             }
                           },
                           child: ItemIconAddLink(

@@ -46,9 +46,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:host="mubrm-tag.web.app/#"
+                    android:host="mubrmtag.com"
                     android:scheme="https"
-                    android:path="/goTo"/>
+                    android:path="/#/"/>
             </intent-filter>
 
         </activity>

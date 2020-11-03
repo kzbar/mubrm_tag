@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mubrm_tag/confing/general.dart';
@@ -18,7 +17,6 @@ class WebPage extends StatefulWidget {
   }
 }
 
-//https://mubrm-tag.web.app/#/goTo?account_id=NJ8kL1wsm2hFmRFVX7uCcicLHQS2
 class _WebPage extends State<WebPage> with TickerProviderStateMixin {
   String errorMessage = 'ERROR TO OPEN';
   AnimationController _loginButtonController;
@@ -38,8 +36,10 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
                   future: getUser(),
                   builder:
                       (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
-                    if (!snapshot.hasError) {
-                      if (snapshot.hasData) {
+                    if (!snapshot.hasError)
+                    {
+                      if (snapshot.hasData)
+                      {
                         AppUser user = snapshot.data;
                         SocialMedia media =
                             SocialMedia.fromJson(user.socialMediaSelected);
@@ -49,13 +49,27 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
                       } else {
                         return Center(
                           child: Container(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
+                            child: Column(
+                              children: [
+                                Container(
+                                  child: Center(
+                                    child: Image.asset(
+                                      'images/PNG/logo.png',
+                                      width: 200,
+                                      height: 150,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: CircularProgressIndicator(strokeWidth: 4,),
+                                )
+                              ],
                             ),
                           ),
                         );
                       }
-                    } else {
+                    }
+                    else {
                       return Container(
                         child: Text(
                           errorMessage,
@@ -65,12 +79,30 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
                     }
                   },
                 )
-              : Container(
-                  child: Center(child: Text(
-                    'No User Found',
-                    style: kTextStyleTile.copyWith(color: Colors.white),
-                  ),),
-                ),
+              : Center(
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    child: Center(
+                      child: Image.asset(
+                        'images/PNG/logo.png',
+                        width: 200,
+                        height: 150,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      'User Not Found',
+                      style: kTextStyle.copyWith(
+                          color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -116,6 +148,12 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           forceSafariVC: false,
         );
       } catch (error) {
+        await launch(data.toString(),
+            forceSafariVC: true,
+            enableDomStorage: true,
+            universalLinksOnly: true,
+            enableJavaScript: true);
+
         setState(() {
           errorMessage = error.toString();
         });
@@ -144,6 +182,14 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
         if (snapshot.hasError) {
           return Container(
             child: Text(''),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 1,
+              ),
+            ),
           );
         } else if (snapshot.hasData) {
           _list = snapshot.data.docs.where((element) {
@@ -241,7 +287,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
 
   Widget profilePrivate(media) {
     Future.delayed(Duration(seconds: 1), () async {
-      _launchURL('${media.socialLinkWeb}${media.value}');
+      //_launchURL('${media.socialLinkWeb}${media.value}');
     });
 
     return Center(
