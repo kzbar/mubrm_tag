@@ -72,7 +72,9 @@ class _ActivePage extends State<ActivePage>
                   child: Text(
                     _supportsNFC
                         ? S.of(context).deviceSupportApp
-                        : Platform.isAndroid ?S.of(context).deviceNotSupportApp :S.of(context).deviceNotSupportAppIos,
+                        : Platform.isAndroid
+                            ? S.of(context).deviceNotSupportApp
+                            : S.of(context).deviceNotSupportAppIos,
                     style: kTextStyle.copyWith(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
@@ -81,18 +83,11 @@ class _ActivePage extends State<ActivePage>
                   visible: _supportsNFC,
                   child: Container(
                     alignment: Alignment.center,
-                    margin:
-                    EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 24),
+                    margin: EdgeInsets.only(
+                        left: 24, right: 24, bottom: 24, top: 24),
                     child: InkWell(
                       onTap: () {
                         _playAnimation();
-                        // Stream<NDEFMessage> _stream = NFC.readNDEF();
-                        // _stream.listen((event) {
-                        //   event.records.map((element) {
-                        //     setState(() {});
-                        //     print(element);
-                        //   }).toList();
-                        // });
                         NDEFMessage newMessage = NDEFMessage.withRecords([
                           NDEFRecord.uri(Uri.parse(
                               'https://mubrmtag.com/#/${user.nameId}'))
@@ -118,7 +113,11 @@ class _ActivePage extends State<ActivePage>
                   ),
                 ),
                 Container(
-                  child: Text(url,style: kTextStyle.copyWith(color: Colors.white,fontSize: 12),),
+                  child: Text(
+                    url,
+                    style:
+                        kTextStyle.copyWith(color: Colors.white, fontSize: 12),
+                  ),
                 ),
                 Container(
                   height: 400,
@@ -149,14 +148,15 @@ class _ActivePage extends State<ActivePage>
       ),
     );
   }
+
   @override
   void dispose() {
     _loginButtonController.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
-    AppUser user = Provider.of<UserModel>(context, listen: false).userApp;
     NFC.isNDEFSupported.then((bool isSupported) {
       setState(() {
         _supportsNFC = isSupported;
@@ -177,7 +177,6 @@ class _ActivePage extends State<ActivePage>
 
     super.initState();
   }
-
 
   setWrote(url) async {
     setState(() {

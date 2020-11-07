@@ -40,7 +40,7 @@ class FireBaseServices implements BaseServices {
               .set(appUser.appUserToJsonFirstTime());
         }
         await FirebaseFirestore.instance.collection('users').doc(appUser.id).collection('socialMediaSelectedList').doc().set(appUser.socialMediaSelected);
-        kSocialList.map((e) async{
+        kSocialMediaSelectedList.map((e) async{
           if(e['id']==1){
             printLog(tag, 'exists');
           }else{

@@ -7,7 +7,6 @@ import 'package:mubrm_tag/generate/generate_qr.dart';
 import 'package:mubrm_tag/generated/l10n.dart';
 import 'package:mubrm_tag/model/social_media.dart';
 import 'package:mubrm_tag/models/app_user.dart';
-import 'package:mubrm_tag/models/database_model.dart';
 import 'package:mubrm_tag/models/user_model.dart';
 import 'package:mubrm_tag/services/firebase_provider.dart';
 import 'package:mubrm_tag/widgets/drawer_widget.dart';
@@ -17,25 +16,13 @@ import 'package:mubrm_tag/widgets/list_item_icons.dart';
 import 'package:mubrm_tag/widgets/list_item_icons_add_link.dart';
 import 'package:mubrm_tag/widgets/sheet_edit_for_header.dart';
 import 'package:mubrm_tag/widgets/sheet_edit_for_list.dart';
-import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _HomePage();
-  }
-}
-
-class RecordEditor {
-  String mediaTypeController;
-  String payloadController;
-
-  RecordEditor(SocialMedia media) {
-    mediaTypeController = media.socialIcon;
-    payloadController = media.value;
   }
 }
 
@@ -45,18 +32,12 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> menuAnimation;
   AnimationController menuController;
-  Future<int> headerId;
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SocialMedia currentMedia;
   Map<String, dynamic> header;
   List<SocialMedia> _list = [];
-  int idHeader;
 
   @override
   void initState() {
-    headerId = _prefs.then((SharedPreferences prefs) {
-      return (prefs.getInt('headerId') ?? 1);
-    });
     controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1000));
     offsetTop = Tween<Offset>(begin: Offset(0.0, 2.0), end: Offset.zero)
@@ -69,7 +50,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
 
     menuAnimation =
         Tween<double>(begin: 0.0, end: 0.25).animate(menuController);
-    Provider.of<DatabaseModel>(context, listen: false).getSocialMediaList();
 
     super.initState();
   }
@@ -77,11 +57,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   @override
   void dispose() {
     menuController.dispose();
-    NFC.readNDEF().listen((event) {
-      event.records.map((element) {
-        print(element.data);
-      }).toList();
-    });
     super.dispose();
   }
 
@@ -526,23 +501,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
       );
-    });
-  }
-
-  void setIdHeader(SocialMedia media, AppUser user) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('headerId', media.id);
-    Map<String, dynamic> data = {};
-    data['socialMediaSelected'] = media.toJson();
-    FirebaseFirestore.instance.collection('users').doc(user.id).update(data);
-    setState(() {
-      idHeader = media.id;
-    });
-  }
-
-  void setUpListIcons() async {
-    Future.delayed(Duration.zero, () async {
-      idHeader = await headerId;
     });
   }
 }

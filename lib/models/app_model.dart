@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+
 class ModelApp with ChangeNotifier {
-  bool isLoading = true;
-  bool appInBackground = true;
-  String message;
-  bool darkTheme = false;
-  String username;
+  /// for language app
   String locale = 'ar';
-  bool isInit = false;
+  /// for left or right Decoration
   TextDirection textDecoration = TextDirection.rtl;
   ModelApp();
+
   Future<bool> changeLanguage(String country, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

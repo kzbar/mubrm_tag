@@ -134,9 +134,6 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> with TickerProviderS
   }
   Future<Null> _playAnimation() async {
     try {
-      setState(() {
-        //isLoading = true;
-      });
       await _loginButtonController.forward();
     } on TickerCanceled {
       printLog('_playAnimation', ' error');
@@ -146,9 +143,6 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> with TickerProviderS
   Future<Null> _stopAnimation() async {
     try {
       await _loginButtonController.reverse();
-      setState(() {
-        //isLoading = false;
-      });
     } on TickerCanceled {
       printLog('_stopAnimation', ' error');
     }

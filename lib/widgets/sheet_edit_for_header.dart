@@ -9,7 +9,6 @@ import 'package:mubrm_tag/generated/l10n.dart';
 import 'package:mubrm_tag/model/social_media.dart';
 import 'package:mubrm_tag/models/app_model.dart';
 import 'package:mubrm_tag/models/app_user.dart';
-import 'package:mubrm_tag/models/database_model.dart';
 import 'package:mubrm_tag/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -233,9 +232,6 @@ class _SheetEdit extends State<SheetEditForSocialMediaSelected> {
                               messageEN: widget.media.messageEN,
 
                             );
-                            Provider.of<DatabaseModel>(context, listen: false)
-                                .update(
-                                media, _fbKey.currentState.value['value']);
                             updateSocial(user.id,media).then((value){
                               Navigator.of(context).pop();
                             });

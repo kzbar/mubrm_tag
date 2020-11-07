@@ -1,16 +1,13 @@
 import 'dart:async';
-import "dart:convert" show JsonUtf8Encoder, json, jsonDecode, jsonEncode, latin1, utf8;
+import "dart:convert" show utf8;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart' as Model;
 import 'package:mubrm_tag/confing/general.dart';
-import 'package:mubrm_tag/database/database.dart';
 import 'package:mubrm_tag/generated/l10n.dart';
-import 'package:mubrm_tag/model/social_media.dart';
 import 'package:mubrm_tag/models/app_model.dart';
-import 'package:mubrm_tag/models/database_model.dart';
 import 'package:mubrm_tag/models/user_model.dart';
 import 'package:mubrm_tag/services/index.dart';
 import 'package:mubrm_tag/web/web_page.dart';
@@ -28,7 +25,6 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<bool> loggedIn;
   final _userModel = UserModel();
-  final _databaseModel = DatabaseModel();
   final _myApp = ModelApp();
 
   @override
@@ -40,7 +36,6 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
           return MultiProvider(
             providers: [
               Provider<UserModel>.value(value: _userModel),
-              Provider<DatabaseModel>.value(value: _databaseModel),
               Provider<ModelApp>.value(value: _myApp)
             ],
             child: MaterialApp(
@@ -113,23 +108,9 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
     loggedIn = _prefs.then((SharedPreferences prefs) {
       return (prefs.getBool('loggedIn') ?? false);
     });
-    if (!kIsWeb) setUpDataBase();
-
     super.initState();
   }
 
-  void setUpDataBase() {
-    Future.delayed(Duration.zero, () async {
-      if (!await DBProvider.db.checkDatabaseIsNotEmpty()) {
-        for (int i = 0; i < kSocialList.length; i++) {
-          Future.delayed(Duration(milliseconds: 500), () async {
-            SocialMedia socialMedia = SocialMedia.fromJson(kSocialList[i]);
-            await DBProvider.db.newSocialMedia(socialMedia);
-          });
-        }
-      }
-    });
-  }
 
   @override
   void didChangeDependencies() {
@@ -175,21 +156,5 @@ class _AppWidget extends State<AppWidget> with WidgetsBindingObserver {
     );
   }
 
-  Future<bool> checkFirstSeen() async {
-    SharedPreferences prefs = await _prefs;
-    bool _seen = prefs.getBool('seen') ?? false;
 
-    if (_seen) {
-      return false;
-    } else {
-      await prefs.setBool('seen', true);
-      return true;
-    }
-  }
-
-  void saveToken(token) async {
-    printLog('saveToken', token);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
-  }
 }

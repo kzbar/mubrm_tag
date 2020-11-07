@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,17 +11,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserModel with ChangeNotifier {
   bool loggedIn = false;
-  bool loading = false;
+
   final Services _service = Services();
+
+  /// firebase user object to get user info
   User userFireBase;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  /// user app object
   AppUser userApp;
-  User doctor;
+
+  /// firebase firestore database
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  StorageReference _photoStorageReference =
-      FirebaseStorage.instance.ref().child("user_photos");
 
   UserModel() {
     getUserFromLocal();
@@ -167,6 +168,7 @@ class UserModel with ChangeNotifier {
     }
   }
 
+  /// get user info if user  login
   Future<void> getUserFromLocal({Function success, Function fail}) async {
     userFireBase = _auth.currentUser;
     final LocalStorage storage = LocalStorage("mubrm_tag");

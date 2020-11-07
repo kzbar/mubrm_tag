@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+/// social media object
 class SocialMedia {
   SocialMedia(
       {this.id,

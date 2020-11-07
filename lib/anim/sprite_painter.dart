@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 class SpritePainter extends CustomPainter {
   final Animation<double> _animation;
-  //50: Color.fromRGBO(227, 195, 151, .1),
 
   SpritePainter(this._animation) : super(repaint: _animation);
 

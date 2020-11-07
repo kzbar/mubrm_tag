@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mubrm_tag/confing/general.dart';
 
+
+/// app user object
 class AppUser {
   String id;
   String name;

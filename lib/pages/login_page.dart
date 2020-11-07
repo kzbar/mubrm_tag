@@ -266,9 +266,10 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
             "messageAR":'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
             "messageEN":'input your email address. This email can be the same of different from the one used for your account sign up.'
           };
-          Map<String, dynamic> _defImage = {};
-          _defImage['image'] = user.photoURL;
-          _defImage['image_path'] = user.uid;
+          Map<String, dynamic> _defImage = {
+            "image":user.photoURL,
+            "image_path":user.uid
+          };
           map['image'] = _defImage;
           map['socialMediaSelected'] = socialMediaSelected;
           map['name'] = user.displayName;

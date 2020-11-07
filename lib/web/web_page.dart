@@ -6,6 +6,7 @@ import 'package:mubrm_tag/models/app_user.dart';
 import 'package:mubrm_tag/widgets/button_animation.dart';
 import 'package:mubrm_tag/widgets/header_item_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:html' as html;
 
 class WebPage extends StatefulWidget {
   final String accountId;
@@ -31,78 +32,72 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
             height: 900,
             decoration: kBoxDecoration,
           ),
-          widget.accountId != null
-              ? FutureBuilder(
-                  future: getUser(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
-                    if (!snapshot.hasError)
-                    {
-                      if (snapshot.hasData)
-                      {
-                        AppUser user = snapshot.data;
-                        SocialMedia media =
-                            SocialMedia.fromJson(user.socialMediaSelected);
-                        return user.profileIsPublic
-                            ? profilePublic(user)
-                            : profilePrivate(media);
-                      } else {
-                        return Center(
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Container(
-                                  child: Center(
-                                    child: Image.asset(
-                                      'images/PNG/logo.png',
-                                      width: 200,
-                                      height: 150,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: CircularProgressIndicator(strokeWidth: 4,),
-                                )
-                              ],
+         widget.accountId != null ?  FutureBuilder(
+            future: getUser(),
+            builder:
+                (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
+              if (!snapshot.hasError)
+              {
+                if (snapshot.hasData)
+                {
+                  AppUser user = snapshot.data;
+                  SocialMedia media =
+                  SocialMedia.fromJson(user.socialMediaSelected);
+                  return user.profileIsPublic
+                      ? profilePublic(user)
+                      : profilePrivate(media);
+                } else {
+                  return Center(
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Center(
+                              child: Image.asset(
+                                'images/PNG/logo.png',
+                                width: 200,
+                                height: 150,
+                              ),
                             ),
                           ),
-                        );
-                      }
-                    }
-                    else {
-                      return Container(
-                        child: Text(
-                          errorMessage,
-                          style: kTextStyleTile.copyWith(color: Colors.white),
-                        ),
-                      );
-                    }
-                  },
-                )
-              : Center(
-            child: Container(
-              child: Column(
-                children: [
-                  Container(
-                    child: Center(
-                      child: Image.asset(
-                        'images/PNG/logo.png',
-                        width: 200,
-                        height: 150,
+                          Container(
+                            child: Text('',style: kTextStyleTile.copyWith(color: Colors.white),),
+                          )
+                        ],
                       ),
                     ),
+                  );
+                }
+              }
+              else {
+                return Container(
+                  child: Text(
+                    errorMessage,
+                    style: kTextStyleTile.copyWith(color: Colors.white),
                   ),
-                  Container(
-                    child: Text(
-                      'User Not Found',
-                      style: kTextStyle.copyWith(
-                          color: Colors.white),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+                );
+              }
+            },
+          ) : Center(
+           child: Container(
+             child: Column(
+               children: [
+                 Container(
+                   child: Center(
+                     child: Image.asset(
+                       'images/PNG/logo.png',
+                       width: 200,
+                       height: 150,
+                     ),
+                   ),
+                 ),
+                 Container(
+                   child: Text('Mubrm App',style: kTextStyleTile.copyWith(color: Colors.white),),
+                 )
+               ],
+             ),
+           ),
+         )
         ],
       ),
     );
@@ -123,11 +118,17 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           .where('nameId', isEqualTo: widget.accountId)
           .get()
           .then((value) {
-        value.docs.map((e) {
-          if (e.data()['nameId'] == widget.accountId) {
-            user = AppUser.fromFireStoreDataBase(e.data());
-          }
-        }).toList();
+        if(value.docs.isNotEmpty){
+          value.docs.map((e) {
+            if (e.data()['nameId'] == widget.accountId) {
+              user = AppUser.fromFireStoreDataBase(e.data());
+            }else{
+              user = null;
+            }
+          }).toList();
+        }else{
+          user = null;
+        }
       });
       return user;
     } catch (error) {
@@ -141,22 +142,16 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
   }
 
   _launchURL(data) async {
+
     if (await canLaunch(data.toString())) {
+
       try {
         await launch(
           data.toString(),
-          forceSafariVC: false,
+          forceSafariVC: true
         );
       } catch (error) {
-        await launch(data.toString(),
-            forceSafariVC: true,
-            enableDomStorage: true,
-            universalLinksOnly: true,
-            enableJavaScript: true);
-
-        setState(() {
-          errorMessage = error.toString();
-        });
+        html.window.open(data, '');
       }
     } else {
       await launch(data.toString(),
@@ -168,6 +163,16 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
         errorMessage = 'Could not launch';
       });
       throw 'Could not launch $data';
+    }
+  }
+  launchURL(data) async {
+    try {
+      await launch(
+          data.toString(),
+          forceSafariVC: true
+      );
+    } catch (error) {
+      html.window.open(data, '');
     }
   }
 
@@ -256,7 +261,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
                           children: _list.map((e) {
                             return InkWell(
                               onTap: () {
-                                _launchURL('${e.socialLinkWeb}${e.value}');
+                                launchURL('${e.socialLinkWeb}${e.value}');
                               },
                               child: ItemIcon(
                                 media: e,
@@ -310,7 +315,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           ),
           InkWell(
             onTap: () {
-              _launchURL('${media.socialLinkWeb}${media.value}');
+              launchURL('${media.socialLinkWeb}${media.value}');
               printLog('_launchURL', media.toJson());
             },
             child: StaggerAnimation(

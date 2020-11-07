@@ -12,9 +12,11 @@ Future<PickedFile> kGetImage(
     {ImageSource imageSource = ImageSource.gallery}) async {
   return await picker.getImage(source: imageSource, imageQuality: 20);
 }
-
+/// default user image profile
 const defImage =
     'https://firebasestorage.googleapis.com/v0/b/mubrm-tag.appspot.com/o/user.png?alt=media&token=7711a266-7292-46dc-971c-20a0abc7e978';
+
+/// function to upload user image to storage firebase
 Future kUploadImage(
     {Function success,
     Function fail,
@@ -55,7 +57,8 @@ const colorsMap = {
   900: Color.fromRGBO(255, 171, 131, .9),
 };
 const MaterialColor customColor = MaterialColor(0xFFAB8361, colorsMap);
-Future share({ref, BuildContext context}) async{
+
+Future share({ref, BuildContext context}) async {
   final RenderBox box = context.findRenderObject();
   await Share.share(ref,
       sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
@@ -63,18 +66,6 @@ Future share({ref, BuildContext context}) async{
 
 const Color color1 = Color(0xFFE3C397);
 const Color color2 = Color(0xFFAB8361);
-
-
-show(context) {
-  Widget dialog = Container(
-    child: Center(
-      child: CircularProgressIndicator(
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-    ),
-  );
-  showDialog(context: context, builder: (_) => dialog);
-}
 
 const kBoxDecoration = BoxDecoration(
     image: DecorationImage(
@@ -106,29 +97,8 @@ const kTextStyleTile = TextStyle(
     color: Color(0xFFE3C397),
     decorationColor: Color(0xFFE3C397));
 
-const kDebug = false;
-
-const kListIcons = [
-  {'icon': '1', "title": "Facebook"},
-  {'icon': '2', "title": "Twitter"},
-  {'icon': '3', "title": "Instagram"},
-  {'icon': '4', "title": "WhatsApp"},
-  {'icon': '5', "title": "Snapchat"},
-  {'icon': '6', "title": "Tik Tok"},
-  {'icon': '7', "title": "Telegram"},
-  {'icon': '8', "title": "Email"},
-  {'icon': '9', "title": "Phone number"},
-  {'icon': '10', "title": "YouTube"},
-  {'icon': '11', "title": "custom link"},
-  {'icon': '12', "title": "Sky"},
-  {'icon': '13', "title": "Asiahawala"},
-  {'icon': '14', "title": "Zain Cash"},
-  {'icon': '15', "title": "LinkedIn"},
-  {'icon': '16', "title": "Viber"},
-];
-
-const message = 'امسك mubrm في منتصف الجزء الخلفي من هاتفك لتنشيطه ، امسك المنبثقة هناك حتى تظهر النافذة المنبثقة للنجاح';
-const kFooterIcon =  {
+/// add link Icon object
+const kFooterIcon = {
   "id": 1,
   "socialName": 'Email',
   "socialLinkIos": '',
@@ -138,14 +108,16 @@ const kFooterIcon =  {
   "socialIsSelect": false,
   "socialAddedTo": true,
   "value": null,
-  "messageAR":'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
-  "messageEN":'input your email address. This email can be the same of different from the one used for your account sign up.'
-
+  "messageAR":
+      'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
+  "messageEN":
+      'input your email address. This email can be the same of different from the one used for your account sign up.'
 };
 
-const kSocialList = [
+/// setup first time database {socialMediaSelectedList}
+const kSocialMediaSelectedList = [
   {
-    "id":1,
+    "id": 1,
     "socialName": 'Email',
     "socialLinkIos": 'mailto:',
     "socialLinkAndroid": 'mailto:',
@@ -154,11 +126,11 @@ const kSocialList = [
     "socialIsSelect": true,
     "socialAddedTo": true,
     "value": null,
-    "messageAR":'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
-    "messageEN":'input your email address. This email can be the same of different from the one used for your account sign up.'
-
+    "messageAR":
+        'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
+    "messageEN":
+        'input your email address. This email can be the same of different from the one used for your account sign up.'
   },
-
   {
     "id": 2,
     "socialName": 'Twitter',
@@ -169,9 +141,10 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'افتح تطبيق تويتر واضغط على صورة حسابك, سيضهر اسم المستخدم الخاص بحسابك بلون رمادي مع علامة',
-    "messageEN":'Open the Twitter app and tap your profile picture in the top left corner Your twitter username will be in grey with @ sing'
-
+    "messageAR":
+        'افتح تطبيق تويتر واضغط على صورة حسابك, سيضهر اسم المستخدم الخاص بحسابك بلون رمادي مع علامة',
+    "messageEN":
+        'Open the Twitter app and tap your profile picture in the top left corner Your twitter username will be in grey with @ sing'
   },
   {
     "id": 3,
@@ -183,13 +156,13 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'افتح تطبيق الانستكرام واذهب الى ملفك الشخصي, سيضهر حسابك اعلى الشاشة',
-    "messageEN":'Open the instagram app and go to yoour profile. Your instagram username will be at the top of your screen.'
-
-
+    "messageAR":
+        'افتح تطبيق الانستكرام واذهب الى ملفك الشخصي, سيضهر حسابك اعلى الشاشة',
+    "messageEN":
+        'Open the instagram app and go to yoour profile. Your instagram username will be at the top of your screen.'
   },
   {
-    "id":4,
+    "id": 4,
     "socialName": 'WhatsApp',
     "socialLinkIos": 'https://wa.me/',
     "socialLinkAndroid": 'https://wa.me/',
@@ -198,12 +171,13 @@ const kSocialList = [
     "socialAddedTo": false,
     "socialIsSelect": false,
     "value": null,
-    "messageAR":'افتح الواتساب واذهب الى الاعدادات اضغط على ملفك الشخصي في الاعلى وقم بنسخ ولصق الرقم مع رمز البلد.',
-    "messageEN":'Open WhatsApp and go to Settings Tap your profile at the top and copy/paste number. include your country code!'
-
+    "messageAR":
+        'افتح الواتساب واذهب الى الاعدادات اضغط على ملفك الشخصي في الاعلى وقم بنسخ ولصق الرقم مع رمز البلد.',
+    "messageEN":
+        'Open WhatsApp and go to Settings Tap your profile at the top and copy/paste number. include your country code!'
   },
   {
-    "id":5,
+    "id": 5,
     "socialName": 'Snapchat',
     "socialLinkIos": 'https://snapchat.com/add/',
     "socialLinkAndroid": 'https://snapchat.com/add/',
@@ -212,13 +186,13 @@ const kSocialList = [
     "socialAddedTo": false,
     "socialIsSelect": false,
     "value": null,
-    "messageAR":'افتح السناب شات واضغط على صورة حسابك, سيضهر الحساب تحت اسم حسابك',
-    "messageEN":'Open Snapchat and tap your profile picture in the top left corner Your username is below your Snapchat name.'
-
-
+    "messageAR":
+        'افتح السناب شات واضغط على صورة حسابك, سيضهر الحساب تحت اسم حسابك',
+    "messageEN":
+        'Open Snapchat and tap your profile picture in the top left corner Your username is below your Snapchat name.'
   },
   {
-    "id":6,
+    "id": 6,
     "socialName": 'Tik Tok',
     "socialLinkIos": 'https://www.tiktok.com/@',
     "socialLinkAndroid": 'https://www.tiktok.com/@',
@@ -227,25 +201,25 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'افتح تطبيق التيك توك ثم اضغط على "صفحتي" سيضهر اسم المستخدم تحت الصورة الشخصية.',
-    "messageEN":'Open Tik Tok and tap your profile picture in the top left corner Your username is below your Tik Tok name.'
-
-
+    "messageAR":
+        'افتح تطبيق التيك توك ثم اضغط على "صفحتي" سيضهر اسم المستخدم تحت الصورة الشخصية.',
+    "messageEN":
+        'Open Tik Tok and tap your profile picture in the top left corner Your username is below your Tik Tok name.'
   },
   {
-    "id":7,
+    "id": 7,
     "socialName": 'Telegram',
-    "socialLinkIos": 'https://telegram.me/',
-    "socialLinkAndroid": 'https://telegram.me/',
-    "socialLinkWeb": 'https://telegram.me/',
+    "socialLinkIos": 'https://t.me/',
+    "socialLinkAndroid": 'https://t.me/',
+    "socialLinkWeb": 'https://t.me/',
     "socialIcon": '7',
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'افتح الواتساب واذهب الى الاعدادات اضغط على ملفك الشخصي في الاعلى وقم بنسخ ولصق الرقم مع رمز البلد.',
-    "messageEN":'Open Telegram and tap your profile picture in the top left corner Your username is below your Telegram name.'
-
-
+    "messageAR":
+        'افتح التلغرام اضغط على ملفك الشخصي في الاعلى سيضهر اسم المستخدم تحت الصورة الشخصية.',
+    "messageEN":
+        'Open Telegram and tap your profile picture in the top left corner Your username is below your Telegram name.'
   },
   {
     "id": 8,
@@ -257,13 +231,13 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'اذهب الى موقع facebook.com وافتح صفحتك الشخصية وقم بنسخ الرابط ولصقه هنا',
-    "messageEN":'Go to facebook.com and open your Facebook profile or page Then copy and past the url link here.'
-
+    "messageAR":
+        'اذهب الى موقع facebook.com وافتح صفحتك الشخصية وقم بنسخ الرابط ولصقه هنا',
+    "messageEN":
+        'Go to facebook.com and open your Facebook profile or page Then copy and past the url link here.'
   },
-
   {
-    "id":9,
+    "id": 9,
     "socialName": 'Phone number',
     "socialLinkIos": 'tel:',
     "socialLinkAndroid": 'tel:',
@@ -272,13 +246,12 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'ادخل رقم هاتفك بدون الرقم صفر البدائي مع رمز البلد (مثال +964 لدولة العراق)',
-    "messageEN":'Enter your phone number with country code.'
-
-
+    "messageAR":
+        'ادخل رقم هاتفك بدون الرقم صفر البدائي مع رمز البلد (مثال +964 لدولة العراق)',
+    "messageEN": 'Enter your phone number with country code.'
   },
   {
-    "id":10,
+    "id": 10,
     "socialName": 'YouTube',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
@@ -287,13 +260,13 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'اذهب الى قناتك او الفبديو, انقر على النقاط الثلاث في الاعلى ثم مشاركة, قم بنسخ ولصق الرابط هنا.',
-    "messageEN":'Go to your channel or video Tap the three dots in the top right corner and tap share Copy/past the link here'
-
-
+    "messageAR":
+        'اذهب الى قناتك او الفبديو, انقر على النقاط الثلاث في الاعلى ثم مشاركة, قم بنسخ ولصق الرابط هنا.',
+    "messageEN":
+        'Go to your channel or video Tap the three dots in the top right corner and tap share Copy/past the link here'
   },
   {
-    "id":12,
+    "id": 12,
     "socialName": 'custom link',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
@@ -302,13 +275,13 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'افتح تطبيق او موقع وقم بنسخ ولصق الرابط هنا, هذا الرابط يسمح لك بمشاركة اي شي لحظيا.',
-    "messageEN":'open your app or website link and copy/past here. This link allows your to instantly share anything.'
-
-
+    "messageAR":
+        'افتح تطبيق او موقع وقم بنسخ ولصق الرابط هنا, هذا الرابط يسمح لك بمشاركة اي شي لحظيا.',
+    "messageEN":
+        'open your app or website link and copy/past here. This link allows your to instantly share anything.'
   },
   {
-    "id":11,
+    "id": 11,
     "socialName": 'Skype',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
@@ -317,39 +290,40 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'اذهب الى موقع SKYP وافتح صفحتك الشخصية وقم بنسخ الرابط ولصقه هنا',
-    "messageEN":''
-
-
+    "messageAR":
+        'اذهب الى موقع SKYP وافتح صفحتك الشخصية وقم بنسخ الرابط ولصقه هنا',
+    "messageEN": ''
   },
   {
-    "id":13,
+    "id": 13,
     "socialName": 'PayPal',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
-    "socialLinkWeb": ':',
+    "socialLinkWeb": '',
     "socialIcon": '13',
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'',
-    "messageEN":''
+    "messageAR":
+        'انتقل إلى paypal.me واضغط على إنشاء رابط PayPal.Me الخاص بك ، انسخ / الصق هنا!',
+    "messageEN":
+        'Go to paypal.me and tap Create your PayPal.Me Link Copy/paste here! '
   },
   {
-    "id":14,
+    "id": 14,
     "socialName": 'Zain Cash',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
-    "socialLinkWeb": ':',
+    "socialLinkWeb": '',
     "socialIcon": '14',
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'',
-    "messageEN":''
+    "messageAR": '',
+    "messageEN": ''
   },
   {
-    "id":15,
+    "id": 15,
     "socialName": 'LinkedIn',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
@@ -358,11 +332,13 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'اذهب الى موقع linkedin.com وافتح صفحتك الشخصية وقم بنسخ الرابط ولصقه هنا',
-    "messageEN":'Go to LinkedIn.com and open your LinkedIn profile or page Then copy and past the url link here.'
+    "messageAR":
+        'اذهب الى موقع linkedin.com وافتح صفحتك الشخصية وقم بنسخ الرابط ولصقه هنا',
+    "messageEN":
+        'Go to LinkedIn.com and open your LinkedIn profile or page Then copy and past the url link here.'
   },
   {
-    "id":16,
+    "id": 16,
     "socialName": 'Viber',
     "socialLinkIos": 'viber://add?number=',
     "socialLinkAndroid": 'viber://add?number=',
@@ -371,25 +347,35 @@ const kSocialList = [
     "socialIsSelect": false,
     "socialAddedTo": false,
     "value": null,
-    "messageAR":'ادخل رقم هاتفك بدون الرقم صفر البدائي مع رمز البلد (مثال +964 لدولة العراق)',
-    "messageEN":'Open v and go to Settings Tap your profile at the top and copy/paste number. include your country code!'
-
+    "messageAR":
+        'ادخل رقم هاتفك بدون الرقم صفر البدائي مع رمز البلد (مثال +964 لدولة العراق)',
+    "messageEN":
+        'Open Viber and go to Settings Tap your profile at the top and copy/paste number. include your country code!'
+  },
+  {
+    "id": 17,
+    "socialName": 'Map',
+    "socialLinkIos": '',
+    "socialLinkAndroid": '',
+    "socialLinkWeb": '',
+    "socialIcon": '17',
+    "socialIsSelect": false,
+    "socialAddedTo": false,
+    "value": null,
+    "messageAR":
+        'افتح خرائط Google وابحث عن موقع عملك. اضغط على زر المشاركة في الجزء العلوي الأيمن وانسخ هنا',
+    "messageEN":
+        'Open Google Maps and find your business location. Tap the share button in the top right and copy here'
   },
 ];
-
-
-const kAdvanceConfig = {
-  "DefaultLanguage": "en",
-  "IsRequiredLogin": true,
-};
+/// theme app
 ThemeData themeData = ThemeData(
-  primaryColor:Color(0xFFE3C397) ,
+    primaryColor: Color(0xFFE3C397),
     primarySwatch: customColor,
-    textSelectionColor:Colors.white ,
-    textSelectionHandleColor:Colors.white ,
-    fontFamily: 'LBC', textTheme: TextTheme(
-
-));
+    textSelectionColor: Colors.white,
+    textSelectionHandleColor: Colors.white,
+    fontFamily: 'LBC',
+    textTheme: TextTheme());
 
 /// Logging config
 const kLOG_TAG = "[MUBRM]";
@@ -399,27 +385,6 @@ printLog(String fun, dynamic data) {
   if (kLOG_ENABLE) {
     print("[${DateTime.now().toUtc()}]$kLOG_TAG${data.toString()}[$fun]");
   }
-}
-
-const kURL_FCM = 'https://fcm.googleapis.com/fcm/send';
-
-const kSERVER_KEY =
-    'key=AAAAWKqc3SA:APA91bEqSkn6la1DP-ciz0hLvlxzcXNGLBFmwQ43or6bmupm58yUCdKxY-8yAetZzYmsik5qXsk7Cjrv7rIitlRCv1Cb2iU3ySq8DCKnTuiBEshVD-KysjtDlNIFhZFzA5hw4QONhZ69';
-
-setSearchParam(String caseName) {
-  List<String> caseSearchList = List();
-  String temp = "";
-  for (int i = 0; i < caseName.length; i++) {
-    temp = temp + caseName[i];
-    caseSearchList.add(temp);
-  }
-  return caseSearchList;
-}
-
-class LoginSMSConstants {
-  static const String countryCodeDefault = 'IQ';
-  static const String dialCodeDefault = '+964';
-  static const String nameDefault = 'Iraq';
 }
 
 const String kLogo = 'images/PNG/logo.jpg';
