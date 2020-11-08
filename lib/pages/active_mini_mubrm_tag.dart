@@ -215,7 +215,7 @@ class _ActivePage extends State<ActivePagePhone>
       });
       wrote = await hasWrote;
       phoneNumber = _prefs.then((SharedPreferences prefs) {
-        return (prefs.getString('phoneNumber') ?? null);
+        return (prefs.getString('phoneNumber') ?? '');
       });
       phone = await phoneNumber;
       if (phone != null) {

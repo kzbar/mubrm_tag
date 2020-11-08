@@ -100,18 +100,18 @@ const kTextStyleTile = TextStyle(
 /// add link Icon object
 const kFooterIcon = {
   "id": 1,
-  "socialName": 'Email',
+  "socialName": 'footer_icon',
   "socialLinkIos": '',
   "socialLinkAndroid": '',
   "socialLinkWeb": '',
   "socialIcon": 'footer_icon',
   "socialIsSelect": false,
-  "socialAddedTo": true,
+  "socialAddedTo": false,
   "value": null,
   "messageAR":
-      'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
+      '',
   "messageEN":
-      'input your email address. This email can be the same of different from the one used for your account sign up.'
+      ''
 };
 
 /// setup first time database {socialMediaSelectedList}
@@ -267,7 +267,7 @@ const kSocialMediaSelectedList = [
   },
   {
     "id": 12,
-    "socialName": 'custom link',
+    "socialName": 'Custom link',
     "socialLinkIos": '',
     "socialLinkAndroid": '',
     "socialLinkWeb": 'https://',
@@ -348,7 +348,7 @@ const kSocialMediaSelectedList = [
     "socialAddedTo": false,
     "value": null,
     "messageAR":
-        'ادخل رقم هاتفك بدون الرقم صفر البدائي مع رمز البلد (مثال +964 لدولة العراق)',
+        'ادخل رقم هاتفك بدون الرقم صفر البدائي مع رمز البلد (مثال 964 لدولة العراق)',
     "messageEN":
         'Open Viber and go to Settings Tap your profile at the top and copy/paste number. include your country code!'
   },
@@ -363,9 +363,9 @@ const kSocialMediaSelectedList = [
     "socialAddedTo": false,
     "value": null,
     "messageAR":
-        'افتح خرائط Google وابحث عن موقع عملك. اضغط على زر المشاركة في الجزء العلوي الأيمن وانسخ هنا',
+        'افتح خرائط Google وابحث عن موقع عملك. اضغط على زر المشاركة في الجزء العلوي الأيمن وانسخ هنا مثال (https://maps.app.goo.gl/jwmqcAkfnhY18bmaA)',
     "messageEN":
-        'Open Google Maps and find your business location. Tap the share button in the top right and copy here'
+        'Open Google Maps and find your business location. Tap the share button in the top right and copy here example (https://maps.app.goo.gl/jwmqcAkfnhY18bmaA)'
   },
 ];
 /// theme app

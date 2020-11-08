@@ -9,12 +9,12 @@ class FirebaseProvider {
         .doc(userId)
         .snapshots()
         .listen((qs) {
-      final socialMedia = mapQueryToMedia(qs);
+      final socialMedia = mapQueryToMedia(qs)??null;
       callback(socialMedia);
     });
   }
 
   static mapQueryToMedia(DocumentSnapshot qs) {
-    return SocialMedia.fromJsonFireStore(qs.data()['socialMediaSelected'],qs.id);
+    return SocialMedia.fromJsonFireStore(qs.data()['socialMediaSelected']??{},qs.id);
   }
 }

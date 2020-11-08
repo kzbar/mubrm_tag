@@ -6,7 +6,7 @@ import 'package:mubrm_tag/models/app_user.dart';
 import 'package:mubrm_tag/widgets/button_animation.dart';
 import 'package:mubrm_tag/widgets/header_item_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 
 class WebPage extends StatefulWidget {
   final String accountId;
@@ -151,7 +151,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           forceSafariVC: true
         );
       } catch (error) {
-        html.window.open(data, '');
+        //html.window.open(data, '');
       }
     } else {
       await launch(data.toString(),
@@ -172,7 +172,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           forceSafariVC: true
       );
     } catch (error) {
-      html.window.open(data, '');
+      //html.window.open(data, '');
     }
   }
 

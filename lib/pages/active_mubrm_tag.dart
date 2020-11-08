@@ -168,7 +168,7 @@ class _ActivePage extends State<ActivePage>
       });
       wrote = await hasWrote;
       urlAccount = _prefs.then((SharedPreferences prefs) {
-        return (prefs.getString('url') ?? null);
+        return (prefs.getString('url') ?? '');
       });
       url = await urlAccount;
     });

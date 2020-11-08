@@ -84,15 +84,7 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                           size: 36,
                         ),
                         onPressed: () {
-                          if (me.value == null) {
-                            if (_fbKey.currentState.validate()) {
-                              setState(() {
-                                messageError = 'يرجى حفظ البيانات قبل اغلاق الصفحة';
-                              });
-                            }
-                          } else {
-                            Navigator.of(context).pop();
-                          }
+                          Navigator.of(context).pop();
                         },
                       ),
                       Spacer(
@@ -442,8 +434,6 @@ class _SheetEdit extends State<SheetEditForSocialList> {
       }
     } else {
       await launch(data);
-      setState(() {
-      });
       throw 'Could not launch $data';
     }
   }
