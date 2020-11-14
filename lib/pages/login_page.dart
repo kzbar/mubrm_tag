@@ -11,6 +11,7 @@ import 'package:mubrm_tag/pages/sing_up_page.dart';
 import 'package:mubrm_tag/widgets/button_animation.dart';
 import 'package:mubrm_tag/widgets/chang_lang.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'home_page.dart';
 
@@ -64,7 +65,6 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                 SizedBox(
                   height: 24,
                 ),
-
                 Text(
                   S.of(context).welcome,
                   style: kTextStyleTile,
@@ -199,6 +199,15 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                           color: Theme.of(context).primaryColor, fontSize: 20),
                     ),
                   ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: (){
+                    _launchURL('https://www.touagency.com');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 24),
+                    child: Text('Developed by Tou Agency',style: TextStyle(color:Theme.of(context).primaryColor,),),),
                 )
               ],
             ),
@@ -351,4 +360,14 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
         });
 
   }
+
+  _launchURL(data) async {
+    try {
+      await launch(data
+      );
+    } catch (error) {
+      throw 'Could not launch $data';
+    }
+  }
+
 }

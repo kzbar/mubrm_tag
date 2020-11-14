@@ -102,8 +102,11 @@ class _DrawerWidget extends State<DrawerWidget>{
                     onTap: (){
                       if(widget.pageName != e['page']){
                         if(e['page'] == 'share'){
-                          share(ref:'https://play.google.com/store/apps/details?id=com.mubrm_tag',context: context);
-                          share(ref:'https://play.google.com/store/apps/details?id=com.mubrm_tag',context: context);
+                          if(Platform.isAndroid){
+                            share(ref:'https://play.google.com/store/apps/details?id=com.mubrm_tag',context: context);
+                          }else{
+                            share(ref:'https://apps.apple.com/us/app/mubrm-tag/id1539979114',context: context);
+                          }
                         }
                         else if(e['page'] == 'exit'){
                           Provider.of<UserModel>(context,listen: false).logOut(success: (s){
@@ -177,9 +180,6 @@ class _DrawerWidget extends State<DrawerWidget>{
     await Share.shareFiles([
       file.path
     ],text: ref);
-    final RenderBox box = context.findRenderObject();
-    // await Share.share(ref,
-    //     sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
 }

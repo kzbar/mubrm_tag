@@ -56,7 +56,6 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-
                 Container(
                   child: Text(
                     S.of(context).singUpTitle,
@@ -225,7 +224,6 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
                 SizedBox(
                   height: 12,
                 ),
-
                 ///login with google
                 InkWell(
                   onTap: () {
@@ -238,7 +236,8 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
                   ),
                 ),
               ],
-            )
+            ),
+
           ],
         ),
       ),
@@ -415,8 +414,10 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
       } else if (error
           .toString()
           .startsWith('[firebase_auth/wrong-password]')) {
+        _stopAnimation('GOOGLE');
         _showMessage(S.of(context).wrongPassword, context);
       } else {
+        _stopAnimation('GOOGLE');
         _showMessage(error.toString(), context);
       }
     }, platformException: (error) {
