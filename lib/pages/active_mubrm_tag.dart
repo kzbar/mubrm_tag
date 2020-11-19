@@ -8,6 +8,7 @@ import 'package:mubrm_tag/models/app_user.dart';
 import 'package:mubrm_tag/models/user_model.dart';
 import 'package:mubrm_tag/widgets/button_animation.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,6 +30,7 @@ class _ActivePage extends State<ActivePage>
   Future<bool> hasWrote;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   AnimationController _loginButtonController;
+  ValueNotifier<dynamic> result = ValueNotifier(null);
 
   @override
   Widget build(BuildContext context) {
@@ -86,20 +88,24 @@ class _ActivePage extends State<ActivePage>
                     margin: EdgeInsets.only(
                         left: 24, right: 24, bottom: 24, top: 24),
                     child: InkWell(
-                      onTap: () {
-                        _playAnimation();
-                        NDEFMessage newMessage = NDEFMessage.withRecords([
-                          NDEFRecord.uri(Uri.parse(
-                              'https://mubrmtag.com/#/${user.nameId}'))
-                        ]);
-                        Stream<NDEFTag> stream = NFC.writeNDEF(newMessage,
-                            once: false,
-                            readerMode: NFCNormalReaderMode(noSounds: false));
-                        stream.listen((NDEFTag tag) {
-                          print('Has Wrote');
-                          setWrote('https://mubrmtag.com/#/${user.nameId}');
+                      onTap: ()  async{
+                        try{
+                          if(Platform.isAndroid)
+                            _ndefWriteAndroid(context, user);
+
+                          if(Platform.isIOS)
+                            _ndefWriteIos(context, user);
+
+
+
+                        }catch(error){
                           _stopAnimation();
-                        });
+                          if(Platform.isAndroid) showAndroidDialog(context,error.toString());
+
+                          if(Platform.isIOS) showIosDialog(context,error.toString());
+
+                        }
+
                         //
                       },
                       child: StaggerAnimation(
@@ -149,6 +155,7 @@ class _ActivePage extends State<ActivePage>
     );
   }
 
+
   @override
   void dispose() {
     _loginButtonController.dispose();
@@ -177,6 +184,56 @@ class _ActivePage extends State<ActivePage>
 
     super.initState();
   }
+
+  void _ndefWriteIos(context,user) {
+    _playAnimation();
+    FocusScope.of(context).requestFocus(FocusNode());
+    NfcManager.instance.startSession(
+        alertMessage: S.of(context).messageToHold,
+        onDiscovered: (NfcTag tag) async {
+          Ndef ndef = Ndef.from(tag);
+          if (ndef == null || !ndef.isWritable) {
+            result.value = 'Tag is not ndef writable';
+            NfcManager.instance.stopSession(errorMessage: result.value);
+            return;
+          }
+          NdefMessage message = NdefMessage([
+            NdefRecord.createUri(Uri.parse('https://mubrmtag.com/#/${user.nameId}')),
+          ]);
+          try {
+            await ndef.write(message);
+            result.value = 'Success to "Ndef Write"';
+            NfcManager.instance.stopSession(alertMessage: S.of(context).hasWroteSuccess);
+            setWrote('https://mubrmtag.com/#/${user.nameId}');
+            _stopAnimation();
+          } catch (e) {
+            result.value = e;
+            NfcManager.instance.stopSession(errorMessage: result.value.toString());
+            _stopAnimation();
+            if(Platform.isAndroid) showAndroidDialog(context,e.toString());
+
+            if(Platform.isIOS) showIosDialog(context,e.toString());
+            return;
+          }
+        });
+  }
+  void _ndefWriteAndroid(context,user) async{
+    try{
+      _playAnimation();
+      NDEFMessage newMessage = NDEFMessage.withRecords([
+        NDEFRecord.uri(Uri.parse('https://mubrmtag.com/#/${user.nameId}'))
+      ]);
+      await NFC.writeNDEF(newMessage).first;
+      await   _stopAnimation();
+      setWrote('https://mubrmtag.com/#/${user.nameId}');
+
+    }catch(error){
+      _stopAnimation();
+      if(Platform.isAndroid) showAndroidDialog(context,error.toString());
+    }
+
+  }
+
 
   setWrote(url) async {
     setState(() {

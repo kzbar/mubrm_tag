@@ -50,7 +50,7 @@
   "shareMyAccountSocial":"شارك {account}",
   "shareMyAccountSocialMessage":"قم بزيارة حسابي  {account}",
   "makeProfilePublic":"اجعل الملف الشخصي عامًا",
-  "makeProfileMessage":"عندما يكون ملفك الشخصي عامًا. يمكن للآخرين الوصول إلى ملف التعريف الخاص بك باستخدام الرابط:"
-
+  "makeProfileMessage":"عندما يكون ملفك الشخصي عامًا. يمكن للآخرين الوصول إلى ملف التعريف الخاص بك باستخدام الرابط:",
+  "hasWroteSuccess": "تمت العملية بنجاح"
 
 }

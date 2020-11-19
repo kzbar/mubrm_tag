@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   AnimationController _loginButtonController;
   AnimationController _loginGoogleButtonController;
-  TextEditingController controller  = TextEditingController();
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -93,10 +95,10 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                       FormBuilderValidators.email(
                           errorText: S.of(context).errorTextEmail),
                     ],
-                    onChanged: (text){
+                    onChanged: (text) {
                       print(text);
                       setState(() {
-                       // controller.text = text.toString().trim();
+                        // controller.text = text.toString().trim();
                       });
                     },
                     decoration: InputDecoration(
@@ -116,7 +118,6 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                   child: FormBuilderTextField(
                     attribute: 'password',
                     obscureText: true,
-
                     cursorColor: Colors.black,
                     style: kTextStyleEditText,
                     validators: [
@@ -129,6 +130,7 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                         border: InputBorder.none),
                   ),
                 ),
+
                 /// login with email
                 InkWell(
                   onTap: () {
@@ -142,9 +144,14 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                     titleButton: S.of(context).continueTo,
                   ),
                 ),
-                SizedBox(height: 12,),
+                SizedBox(
+                  height: 12,
+                ),
+
                 ///login with google
-                InkWell(
+                Visibility(
+                  visible: Platform.isAndroid,
+                  child: InkWell(
                   onTap: () {
                     loginWithGoogle(context);
                   },
@@ -153,7 +160,7 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                     buttonController: _loginGoogleButtonController.view,
                     titleButton: S.of(context).continueWithGoogle,
                   ),
-                ),
+                ),),
                 SizedBox(
                   height: 50,
                 ),
@@ -162,7 +169,7 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                   child: RichText(
                       key: UniqueKey(),
                       text: TextSpan(
-                          text: ' ${S.of(context).doNotHaveAccount }',
+                          text: ' ${S.of(context).doNotHaveAccount}',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -178,7 +185,7 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                                 },
                               text: ' ${S.of(context).singUp}',
                               style: TextStyle(
-                                  color:Theme.of(context).primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                   fontSize: 22,
                                   fontFamily: 'LBC'),
                             )
@@ -202,12 +209,18 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
                 ),
                 Spacer(),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     _launchURL('https://www.touagency.com');
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 24),
-                    child: Text('Developed by Tou Agency',style: TextStyle(color:Theme.of(context).primaryColor,),),),
+                    child: Text(
+                      'Developed by Tou Agency',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -219,12 +232,10 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
 
   Future<Null> _playAnimation(type) async {
     try {
-      if(type == 'GOOGLE'){
+      if (type == 'GOOGLE') {
         await _loginGoogleButtonController.forward();
-
-      }else{
+      } else {
         await _loginButtonController.forward();
-
       }
     } on TickerCanceled {
       printLog('_playAnimation', ' error');
@@ -233,12 +244,10 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
 
   Future<Null> _stopAnimation(type) async {
     try {
-      if(type ==' GOOGLE'){
+      if (type == ' GOOGLE') {
         await _loginGoogleButtonController.reverse();
-
-      }else{
+      } else {
         await _loginButtonController.reverse();
-
       }
     } on TickerCanceled {
       printLog('_stopAnimation', ' error');
@@ -257,117 +266,101 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
       ..showSnackBar(snackBar);
   }
 
-  void loginWithGoogle(BuildContext context) async{
+  void loginWithGoogle(BuildContext context) async {
     _playAnimation('GOOGLE');
     Provider.of<UserModel>(context, listen: false).sinInWithGoogle(
         success: (User user) {
-          Map<String,dynamic> map ={};
-          Map<String,dynamic> socialMediaSelected =  {
-            "id": 1,
-            "socialName": 'Email',
-            "socialLinkIos": 'mailto:',
-            "socialLinkAndroid": 'mailto:',
-            "socialLinkWeb": 'mailto:',
-            "socialIcon": '8',
-            "socialIsSelect": false,
-            "socialAddedTo": true,
-            "value": user.email,
-            "messageAR":'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
-            "messageEN":'input your email address. This email can be the same of different from the one used for your account sign up.'
-          };
-          Map<String, dynamic> _defImage = {
-            "image":user.photoURL,
-            "image_path":user.uid
-          };
-          map['image'] = _defImage;
-          map['socialMediaSelected'] = socialMediaSelected;
-          map['name'] = user.displayName;
-          AppUser _user = AppUser.fromFirebaseEmailFirstTime(user, map);
-          Provider.of<UserModel>(context,
-              listen: false)
-              .addUser(
-              user: _user,
-              fail: (error) {
-                _stopAnimation('GOOGLE');
-                _showMessage(
-                    error.toString(), context);
-
-                printLog('fail addUser',
-                    error.toString());
-              },
-              success: (AppUser appUser) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) =>
-                            HomePage()));
-              },
-              platformException: (error) {
-                _stopAnimation('GOOGLE');
-                _showMessage(
-                    error.toString(), context);
-
-                printLog(
-                    'platformException addUser',
-                    error.toString());
-              });
-
-        },
-        fail: (error) {
-          _stopAnimation('GOOGLE');
-          if(error.toString().startsWith('[firebase_auth/user-not-found]')){
-            _showMessage(S.of(context).restPasswordError, context);
-          }else if(error.toString().startsWith('[firebase_auth/wrong-password]')){
-            _showMessage(S.of(context).wrongPassword, context);
-          }else{
+      Map<String, dynamic> map = {};
+      Map<String, dynamic> socialMediaSelected = {
+        "id": 1,
+        "socialName": 'Email',
+        "socialLinkIos": 'mailto:',
+        "socialLinkAndroid": 'mailto:',
+        "socialLinkWeb": 'mailto:',
+        "socialIcon": '8',
+        "socialIsSelect": false,
+        "socialAddedTo": true,
+        "value": user.email,
+        "messageAR":
+            'ادخل بريدك الخاص, هذا الاميل يمكن ان يكون نفس الاميل المسجل او بريد حسابي اخر.',
+        "messageEN":
+            'input your email address. This email can be the same of different from the one used for your account sign up.'
+      };
+      Map<String, dynamic> _defImage = {
+        "image": user.photoURL,
+        "image_path": user.uid
+      };
+      map['image'] = _defImage;
+      map['socialMediaSelected'] = socialMediaSelected;
+      map['name'] = user.displayName;
+      AppUser _user = AppUser.fromFirebaseEmailFirstTime(user, map);
+      Provider.of<UserModel>(context, listen: false).addUser(
+          user: _user,
+          fail: (error) {
+            _stopAnimation('GOOGLE');
             _showMessage(error.toString(), context);
-          }
 
-        },
-        platformException: (error) {
-          _stopAnimation('GOOGLE');
-          _showMessage(error.toString(), context);
-        });
+            printLog('fail addUser', error.toString());
+          },
+          success: (AppUser appUser) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => HomePage()));
+          },
+          platformException: (error) {
+            _stopAnimation('GOOGLE');
+            _showMessage(error.toString(), context);
 
+            printLog('platformException addUser', error.toString());
+          });
+    }, fail: (error) {
+      _stopAnimation('GOOGLE');
+      if (error.toString().startsWith('[firebase_auth/user-not-found]')) {
+        _showMessage(S.of(context).restPasswordError, context);
+      } else if (error
+          .toString()
+          .startsWith('[firebase_auth/wrong-password]')) {
+        _showMessage(S.of(context).wrongPassword, context);
+      } else {
+        _showMessage(error.toString(), context);
+      }
+    }, platformException: (error) {
+      _stopAnimation('GOOGLE');
+      _showMessage(error.toString(), context);
+    });
   }
 
-  void loginWithEmail(BuildContext context){
+  void loginWithEmail(BuildContext context) {
     _playAnimation('login');
     Provider.of<UserModel>(context, listen: false).loginIn(
         json: _fbKey.currentState.value,
         success: (AppUser user) {
           _stopAnimation('login');
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => HomePage()));
-
+              context, MaterialPageRoute(builder: (_) => HomePage()));
         },
         fail: (error) {
           _stopAnimation('login');
-          if(error.toString().startsWith('[firebase_auth/user-not-found]')){
+          if (error.toString().startsWith('[firebase_auth/user-not-found]')) {
             _showMessage(S.of(context).restPasswordError, context);
-          }else if(error.toString().startsWith('[firebase_auth/wrong-password]')){
+          } else if (error
+              .toString()
+              .startsWith('[firebase_auth/wrong-password]')) {
             _showMessage(S.of(context).wrongPassword, context);
-          }else{
+          } else {
             _showMessage(error.toString(), context);
           }
-
         },
         platformException: (error) {
           _stopAnimation('login');
           _showMessage(error.toString(), context);
         });
-
   }
 
   _launchURL(data) async {
     try {
-      await launch(data
-      );
+      await launch(data);
     } catch (error) {
       throw 'Could not launch $data';
     }
   }
-
 }

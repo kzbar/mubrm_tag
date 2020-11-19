@@ -22,11 +22,15 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
   String errorMessage = 'ERROR TO OPEN';
   AnimationController _loginButtonController;
   List<SocialMedia> _list = [];
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Stack(
+
         children: [
           Container(
             height: 900,
@@ -44,8 +48,8 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
                   SocialMedia media =
                   SocialMedia.fromJson(user.socialMediaSelected);
                   return user.profileIsPublic
-                      ? profilePublic(user)
-                      : profilePrivate(media);
+                      ? profilePublic(user,context)
+                      : profilePrivate(media,context);
                 } else {
                   return Center(
                     child: Container(
@@ -141,42 +145,33 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
     super.didChangeDependencies();
   }
 
-  _launchURL(data) async {
-
-    if (await canLaunch(data.toString())) {
-
+  launchURL(data,context) async {
+    if(await canLaunch(data.toString())){
       try {
         await launch(
           data.toString(),
-          forceSafariVC: true
         );
       } catch (error) {
-        //html.window.open(data, '');
+        _showMessage(error.toString(), context);
       }
-    } else {
-      await launch(data.toString(),
-          forceSafariVC: true,
-          enableDomStorage: true,
-          universalLinksOnly: true,
-          enableJavaScript: true);
-      setState(() {
-        errorMessage = 'Could not launch';
-      });
-      throw 'Could not launch $data';
-    }
-  }
-  launchURL(data) async {
-    try {
-      await launch(
-          data.toString(),
-          forceSafariVC: true
-      );
-    } catch (error) {
-      //html.window.open(data, '');
+    }else{
+      _showMessage(data + "error", context);
     }
   }
 
-  Widget profilePublic(user) {
+  void _showMessage(String message, context) {
+    final snackBar = SnackBar(
+      content: Text(
+        '$message !',
+        style: kTextStyle,
+      ),
+    );
+    _scaffoldKey.currentState
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
+  Widget profilePublic(user,context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('users')
@@ -261,7 +256,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
                           children: _list.map((e) {
                             return InkWell(
                               onTap: () {
-                                launchURL('${e.socialLinkWeb}${e.value}');
+                                launchURL('${e.socialLinkWeb}${e.value}',context);
                               },
                               child: ItemIcon(
                                 media: e,
@@ -290,7 +285,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget profilePrivate(media) {
+  Widget profilePrivate(media,context) {
     Future.delayed(Duration(seconds: 1), () async {
       //_launchURL('${media.socialLinkWeb}${media.value}');
     });
@@ -315,7 +310,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           ),
           InkWell(
             onTap: () {
-              launchURL('${media.socialLinkWeb}${media.value}');
+              launchURL('${media.socialLinkWeb}${media.value}',context);
               printLog('_launchURL', media.toJson());
             },
             child: StaggerAnimation(

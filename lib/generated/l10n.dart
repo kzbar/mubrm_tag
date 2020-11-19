@@ -552,6 +552,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Operation accomplished successfully`
+  String get hasWroteSuccess {
+    return Intl.message(
+      'Operation accomplished successfully',
+      name: 'hasWroteSuccess',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

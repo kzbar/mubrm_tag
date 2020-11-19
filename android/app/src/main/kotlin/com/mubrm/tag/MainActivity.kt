@@ -1,4 +1,4 @@
-package com.mubrm.mubrm_tag
+package com.mubrm.tag
 
 import io.flutter.embedding.android.FlutterActivity
 

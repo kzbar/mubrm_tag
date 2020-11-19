@@ -55,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "exit" : MessageLookupByLibrary.simpleMessage("تسجيل خروج"),
     "forgetPassword" : MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور"),
     "generateQR" : MessageLookupByLibrary.simpleMessage("شارك حساباتك عن طريق الباركود"),
+    "hasWroteSuccess" : MessageLookupByLibrary.simpleMessage("تمت العملية بنجاح"),
     "mainPage" : MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
     "makeProfileMessage" : MessageLookupByLibrary.simpleMessage("عندما يكون ملفك الشخصي عامًا. يمكن للآخرين الوصول إلى ملف التعريف الخاص بك باستخدام الرابط:"),
     "makeProfilePublic" : MessageLookupByLibrary.simpleMessage("اجعل الملف الشخصي عامًا"),

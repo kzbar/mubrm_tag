@@ -55,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "exit" : MessageLookupByLibrary.simpleMessage("Exit"),
     "forgetPassword" : MessageLookupByLibrary.simpleMessage("Forget password"),
     "generateQR" : MessageLookupByLibrary.simpleMessage("Generate QR"),
+    "hasWroteSuccess" : MessageLookupByLibrary.simpleMessage("Operation accomplished successfully"),
     "mainPage" : MessageLookupByLibrary.simpleMessage("Main page"),
     "makeProfileMessage" : MessageLookupByLibrary.simpleMessage("when your profile is public . others can access your profile using the link : "),
     "makeProfilePublic" : MessageLookupByLibrary.simpleMessage("Make profile public"),

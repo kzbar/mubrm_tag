@@ -26,7 +26,11 @@ class UserModel with ChangeNotifier {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   UserModel() {
-    getUserFromLocal();
+    try{
+      getUserFromLocal();
+    }catch(error){
+      printLog('getUserFromLocal', error.toString());
+    }
   }
 
   Future<void> saveUser(AppUser user) async {
@@ -170,9 +174,9 @@ class UserModel with ChangeNotifier {
 
   /// get user info if user  login
   Future<void> getUserFromLocal({Function success, Function fail}) async {
-    userFireBase = _auth.currentUser;
     final LocalStorage storage = LocalStorage("mubrm_tag");
     try {
+      userFireBase = _auth.currentUser;
       final ready = await storage.ready;
       if (ready) {
         final json = storage.getItem("userInfo");

@@ -225,14 +225,17 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
                   height: 12,
                 ),
                 ///login with google
-                InkWell(
-                  onTap: () {
-                    loginWithGoogle(context);
-                  },
-                  child: StaggerAnimation(
-                    begin: 200,
-                    buttonController: _loginGoogleButtonController.view,
-                    titleButton: S.of(context).continueWithGoogle,
+                Visibility(
+                  visible: Platform.isAndroid,
+                  child: InkWell(
+                    onTap: () {
+                      loginWithGoogle(context);
+                    },
+                    child: StaggerAnimation(
+                      begin: 200,
+                      buttonController: _loginGoogleButtonController.view,
+                      titleButton: S.of(context).continueWithGoogle,
+                    ),
                   ),
                 ),
               ],

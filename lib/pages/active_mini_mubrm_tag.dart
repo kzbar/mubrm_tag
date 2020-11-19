@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:mubrm_tag/confing/general.dart';
 import 'package:mubrm_tag/generated/l10n.dart';
 import 'package:mubrm_tag/widgets/button_animation.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivePagePhone extends StatefulWidget {
@@ -28,6 +31,8 @@ class _ActivePage extends State<ActivePagePhone>
   Future<String> phoneNumber;
   Future<bool> hasWrote;
   bool wrote = false;
+  ValueNotifier<dynamic> result = ValueNotifier(null);
+
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final TextEditingController controller = TextEditingController();
@@ -125,46 +130,22 @@ class _ActivePage extends State<ActivePagePhone>
                     margin: EdgeInsets.only(
                         left: 24, right: 24, bottom: 24, top: 24),
                     child: InkWell(
-                      onTap: () {
-                        _fbKey.currentState.save();
-                        if (_fbKey.currentState.validate()) {
-                          _playAnimation();
-                          Stream<NDEFMessage> _stream = NFC.readNDEF();
-
-                          _stream.listen((event) {
-                            try{
-                              NDEFMessage newMessage = NDEFMessage.withRecords([
-                                NDEFRecord.uri(Uri.parse(
-                                    'tel:${_fbKey.currentState.value['phoneNumber']}'))
-                              ]);
-                              event.tag.write(newMessage);
-
-                            }on PlatformException catch (error){
-                              print(error.message);
-                              _stopAnimation();
+                      onTap: () async {
+                        try {
+                          _fbKey.currentState.save();
+                          if (_fbKey.currentState.validate()) {
+                            if(Platform.isIOS){
+                              _ndefWriteIos(context);
                             }
-                            event.records.map((element) {
-                              setState(() {
-                                phone =
-                                    element.data.substring(3).trim().toString();
-                              });
-                              print(element.data);
-                            }).toList();
-                          });
+                            if(Platform.isAndroid){
+                              _ndefWriteAndroid(context);
+                            }
+                          }
+                        } catch (error) {
+                          _stopAnimation();
+                          if(Platform.isAndroid) showAndroidDialog(context,error.toString());
 
-                          NDEFMessage newMessage = NDEFMessage.withRecords([
-                            NDEFRecord.uri(Uri.parse(
-                                'tel:${_fbKey.currentState.value['phoneNumber']}'))
-                          ]);
-                          Stream<NDEFTag> stream = NFC.writeNDEF(newMessage,
-                              once: true,
-                              readerMode: NFCNormalReaderMode(noSounds: false));
-                          stream.listen((NDEFTag tag) {
-                            print('Has Wrote');
-                            setWrote(
-                                'tel:${_fbKey.currentState.value['phoneNumber']}');
-                            _stopAnimation();
-                          });
+                          if(Platform.isIOS) showIosDialog(context,error.toString());
                         }
                         //
                       },
@@ -215,7 +196,7 @@ class _ActivePage extends State<ActivePagePhone>
       });
       wrote = await hasWrote;
       phoneNumber = _prefs.then((SharedPreferences prefs) {
-        return (prefs.getString('phoneNumber') ?? '');
+        return (prefs.getString('phoneNumber') ?? null);
       });
       phone = await phoneNumber;
       if (phone != null) {
@@ -234,6 +215,56 @@ class _ActivePage extends State<ActivePagePhone>
 
     super.initState();
   }
+
+  void _ndefWriteIos(context) {
+    _playAnimation();
+    FocusScope.of(context).requestFocus(FocusNode());
+    NfcManager.instance.startSession(
+      alertMessage: S.of(context).messageToHold,
+        onDiscovered: (NfcTag tag) async {
+      Ndef ndef = Ndef.from(tag);
+      if (ndef == null || !ndef.isWritable) {
+        result.value = 'Tag is not ndef writable';
+        NfcManager.instance.stopSession(errorMessage: result.value);
+        return;
+      }
+      NdefMessage message = NdefMessage([
+        NdefRecord.createUri(Uri.parse('tel:${_fbKey.currentState.value['phoneNumber']}')),
+      ]);
+      try {
+        await ndef.write(message);
+        result.value = 'Success to "Ndef Write"';
+        NfcManager.instance.stopSession(alertMessage: S.of(context).hasWroteSuccess);
+        setWrote('tel:${_fbKey.currentState.value['phoneNumber']}');
+        _stopAnimation();
+      } catch (e) {
+        result.value = e;
+        NfcManager.instance.stopSession(errorMessage: result.value.toString());
+        _stopAnimation();
+        if(Platform.isAndroid) showAndroidDialog(context,e.toString());
+
+        if(Platform.isIOS) showIosDialog(context,e.toString());
+        return;
+      }
+    });
+  }
+  void _ndefWriteAndroid(context) async{
+    try{
+      _playAnimation();
+      NDEFMessage newMessage = NDEFMessage.withRecords([
+        NDEFRecord.uri(Uri.parse('tel:${_fbKey.currentState.value['phoneNumber']}'))
+      ]);
+      await NFC.writeNDEF(newMessage).first;
+      await   _stopAnimation();
+      setWrote('tel:${_fbKey.currentState.value['phoneNumber']}');
+
+    }catch(error){
+      _stopAnimation();
+      if(Platform.isAndroid) showAndroidDialog(context,error.toString());
+    }
+
+  }
+
 
   setWrote(phone) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -266,6 +297,29 @@ class _ActivePage extends State<ActivePagePhone>
     } on TickerCanceled {
       printLog('_stopAnimation', ' error');
     }
+  }
+
+  Future wirte() {
+    Stream<NDEFMessage> _stream = NFC.readNDEF();
+
+    _stream.listen((event) {
+      try {
+        NDEFMessage newMessage = NDEFMessage.withRecords([
+          NDEFRecord.uri(
+              Uri.parse('tel:${_fbKey.currentState.value['phoneNumber']}'))
+        ]);
+        event.tag.write(newMessage);
+      } on PlatformException catch (error) {
+        print(error.message);
+        _stopAnimation();
+      }
+      event.records.map((element) {
+        setState(() {
+          phone = element.data.substring(3).trim().toString();
+        });
+        print(element.data);
+      }).toList();
+    });
   }
 
   @override

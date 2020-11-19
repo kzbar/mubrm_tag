@@ -1,4 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:share/share.dart';
@@ -43,6 +44,40 @@ Future kUploadImage(
     fail(error);
   }
 }
+showAndroidDialog(context,message) {
+  showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+        title: new Text('ERROR',style: TextStyle(color: Colors.red),),
+        content: new Text("Hey! I'm Coflutter!"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(message,style: kTextStyleTile,),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ));
+}
+
+showIosDialog(context,message) {
+  showDialog(
+      context: context,
+      builder: (_) => new CupertinoAlertDialog(
+        title: new Text('ERROR',style: TextStyle(color: Colors.red),),
+        content: new Text(message,style: kTextStyleTile,),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Close me!'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ));
+}
+
 
 const colorsMap = {
   50: Color.fromRGBO(255, 171, 131, .1),

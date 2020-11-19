@@ -50,7 +50,8 @@
   "shareMyAccountSocial":"Share {account}",
   "shareMyAccountSocialMessage":"visit my account {account}",
   "makeProfilePublic":"Make profile public",
-  "makeProfileMessage":"when your profile is public . others can access your profile using the link : "
+  "makeProfileMessage":"when your profile is public . others can access your profile using the link : ",
+  "hasWroteSuccess": "Operation accomplished successfully"
 
 
 }

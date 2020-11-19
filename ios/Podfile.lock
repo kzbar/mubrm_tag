@@ -389,6 +389,8 @@ PODS:
   - nanopb/encode (1.30905.0)
   - nfc_in_flutter (1.0.0):
     - Flutter
+  - nfc_manager (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - phone_number (0.6.2):
@@ -418,6 +420,7 @@ DEPENDENCIES:
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - nfc_in_flutter (from `.symlinks/plugins/nfc_in_flutter/ios`)
+  - nfc_manager (from `.symlinks/plugins/nfc_manager/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - phone_number (from `.symlinks/plugins/phone_number/ios`)
   - share (from `.symlinks/plugins/share/ios`)
@@ -477,6 +480,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker/ios"
   nfc_in_flutter:
     :path: ".symlinks/plugins/nfc_in_flutter/ios"
+  nfc_manager:
+    :path: ".symlinks/plugins/nfc_manager/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   phone_number:
@@ -526,6 +531,7 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   nfc_in_flutter: c656fbfb1ec5b9d021da87b0c87629d62fd5264d
+  nfc_manager: 9ba5491711cb9addae5ebb879ce6d3d85c5055c3
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   phone_number: b545f5b7d9711bec0f020c7df43ae5a82119f4ad
   PhoneNumberKit: df411d46177d1492da84e10b6c093846dd861452
