@@ -5,11 +5,10 @@ import 'package:mubrm_tag/router/app_module.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {
-   WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-   Provider.debugCheckInvalidValueType = null;
+  Provider.debugCheckInvalidValueType = null;
 
-   runApp(ModularApp(module: AppModule()));
+  runApp(ModularApp(module: AppModule()));
 }
-

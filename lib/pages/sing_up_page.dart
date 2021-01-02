@@ -287,7 +287,7 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
                   map['image'] = url;
                   map['socialMediaSelected'] = socialMediaSelected;
                   AppUser _user = AppUser.fromFirebaseEmailFirstTime(user, map);
-                  Provider.of<UserModel>(context, listen: false).addUser(
+                  Provider.of<UserModel>(context, listen: false).addUserToDatabase(
                       user: _user,
                       fail: (error) {
                         _stopAnimation('singUp');
@@ -331,7 +331,7 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
             map['image'] = _defImage;
             map['socialMediaSelected'] = socialMediaSelected;
             AppUser _user = AppUser.fromFirebaseEmailFirstTime(user, map);
-            Provider.of<UserModel>(context, listen: false).addUser(
+            Provider.of<UserModel>(context, listen: false).addUserToDatabase(
                 user: _user,
                 fail: (error) {
                   _stopAnimation('singUp');
@@ -392,7 +392,7 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
       map['name'] = user.displayName;
 
       AppUser _user = AppUser.fromFirebaseEmailFirstTime(user, map);
-      Provider.of<UserModel>(context, listen: false).addUser(
+      Provider.of<UserModel>(context, listen: false).addUserToDatabase(
           user: _user,
           fail: (error) {
             _stopAnimation('GOOGLE');
@@ -428,8 +428,6 @@ class _SingUpPage extends State<SingUpPage> with TickerProviderStateMixin {
       _showMessage(error.toString(), context);
     });
   }
-
-
 
   @override
   void dispose() {

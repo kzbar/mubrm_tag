@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mubrm_tag/pages/active_mubrm_tag.dart';
 import 'package:mubrm_tag/pages/active_mini_mubrm_tag.dart';
 import 'package:mubrm_tag/pages/edit_profile_page.dart';
-import 'package:mubrm_tag/pages/forget_page.dart';
+import 'package:mubrm_tag/pages/forget_password_page.dart';
 import 'package:mubrm_tag/pages/home_page.dart';
 import 'package:mubrm_tag/pages/login_page.dart';
 import 'package:mubrm_tag/pages/sing_up_page.dart';

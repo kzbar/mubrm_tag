@@ -10,6 +10,8 @@ class ModelApp with ChangeNotifier {
   TextDirection textDecoration = TextDirection.rtl;
   ModelApp();
 
+
+  /// function to change app  lang
   Future<bool> changeLanguage(String country, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

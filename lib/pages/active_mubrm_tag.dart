@@ -184,6 +184,7 @@ class _ActivePage extends State<ActivePage>
 
     super.initState();
   }
+  /// save data to tag from ios
 
   void _ndefWriteIos(context,user) {
     _playAnimation();
@@ -217,6 +218,8 @@ class _ActivePage extends State<ActivePage>
           }
         });
   }
+  /// save data to tag from android
+
   void _ndefWriteAndroid(context,user) async{
     try{
       _playAnimation();

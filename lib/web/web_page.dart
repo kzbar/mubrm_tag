@@ -24,84 +24,88 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
   List<SocialMedia> _list = [];
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       body: Stack(
-
         children: [
           Container(
             height: 900,
             decoration: kBoxDecoration,
           ),
-         widget.accountId != null ?  FutureBuilder(
-            future: getUser(),
-            builder:
-                (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
-              if (!snapshot.hasError)
-              {
-                if (snapshot.hasData)
-                {
-                  AppUser user = snapshot.data;
-                  SocialMedia media =
-                  SocialMedia.fromJson(user.socialMediaSelected);
-                  return user.profileIsPublic
-                      ? profilePublic(user,context)
-                      : profilePrivate(media,context);
-                } else {
-                  return Center(
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Center(
-                              child: Image.asset(
-                                'images/PNG/logo.png',
-                                width: 200,
-                                height: 150,
-                              ),
+          widget.accountId != null
+              ? FutureBuilder(
+                  future: getUser(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
+                    if (!snapshot.hasError) {
+                      if (snapshot.hasData) {
+                        AppUser user = snapshot.data;
+                        SocialMedia media =
+                            SocialMedia.fromJson(user.socialMediaSelected);
+                        return user.profileIsPublic
+                            ? profilePublic(user, context)
+                            : profilePrivate(media, context);
+                      } else {
+                        return Center(
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  child: Center(
+                                    child: Image.asset(
+                                      'images/PNG/logo.png',
+                                      width: 200,
+                                      height: 150,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    '',
+                                    style: kTextStyleTile.copyWith(
+                                        color: Colors.white),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                          Container(
-                            child: Text('',style: kTextStyleTile.copyWith(color: Colors.white),),
-                          )
-                        ],
-                      ),
+                        );
+                      }
+                    } else {
+                      return Container(
+                        child: Text(
+                          errorMessage,
+                          style: kTextStyleTile.copyWith(color: Colors.white),
+                        ),
+                      );
+                    }
+                  },
+                )
+              : Center(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Center(
+                            child: Image.asset(
+                              'images/PNG/logo.png',
+                              width: 200,
+                              height: 150,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            'Mubrm App',
+                            style: kTextStyleTile.copyWith(color: Colors.white),
+                          ),
+                        )
+                      ],
                     ),
-                  );
-                }
-              }
-              else {
-                return Container(
-                  child: Text(
-                    errorMessage,
-                    style: kTextStyleTile.copyWith(color: Colors.white),
                   ),
-                );
-              }
-            },
-          ) : Center(
-           child: Container(
-             child: Column(
-               children: [
-                 Container(
-                   child: Center(
-                     child: Image.asset(
-                       'images/PNG/logo.png',
-                       width: 200,
-                       height: 150,
-                     ),
-                   ),
-                 ),
-                 Container(
-                   child: Text('Mubrm App',style: kTextStyleTile.copyWith(color: Colors.white),),
-                 )
-               ],
-             ),
-           ),
-         )
+                )
         ],
       ),
     );
@@ -122,15 +126,15 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           .where('nameId', isEqualTo: widget.accountId)
           .get()
           .then((value) {
-        if(value.docs.isNotEmpty){
+        if (value.docs.isNotEmpty) {
           value.docs.map((e) {
             if (e.data()['nameId'] == widget.accountId) {
               user = AppUser.fromFireStoreDataBase(e.data());
-            }else{
+            } else {
               user = null;
             }
           }).toList();
-        }else{
+        } else {
           user = null;
         }
       });
@@ -145,8 +149,8 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
     super.didChangeDependencies();
   }
 
-  launchURL(data,context) async {
-    if(await canLaunch(data.toString())){
+  launchURL(data, context) async {
+    if (await canLaunch(data.toString())) {
       try {
         await launch(
           data.toString(),
@@ -154,7 +158,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
       } catch (error) {
         _showMessage(error.toString(), context);
       }
-    }else{
+    } else {
       _showMessage(data + "error", context);
     }
   }
@@ -171,7 +175,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
       ..showSnackBar(snackBar);
   }
 
-  Widget profilePublic(user,context) {
+  Widget profilePublic(user, context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('users')
@@ -256,7 +260,8 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
                           children: _list.map((e) {
                             return InkWell(
                               onTap: () {
-                                launchURL('${e.socialLinkWeb}${e.value}',context);
+                                launchURL(
+                                    '${e.socialLinkWeb}${e.value}', context);
                               },
                               child: ItemIcon(
                                 media: e,
@@ -285,7 +290,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget profilePrivate(media,context) {
+  Widget profilePrivate(media, context) {
     Future.delayed(Duration(seconds: 1), () async {
       //_launchURL('${media.socialLinkWeb}${media.value}');
     });
@@ -310,7 +315,7 @@ class _WebPage extends State<WebPage> with TickerProviderStateMixin {
           ),
           InkWell(
             onTap: () {
-              launchURL('${media.socialLinkWeb}${media.value}',context);
+              launchURL('${media.socialLinkWeb}${media.value}', context);
               printLog('_launchURL', media.toJson());
             },
             child: StaggerAnimation(

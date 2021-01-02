@@ -8,10 +8,10 @@ import 'package:mubrm_tag/confing/general.dart';
 import 'package:mubrm_tag/generated/l10n.dart';
 import 'package:mubrm_tag/models/app_user.dart';
 import 'package:mubrm_tag/models/user_model.dart';
-import 'package:mubrm_tag/pages/forget_page.dart';
+import 'package:mubrm_tag/pages/forget_password_page.dart';
 import 'package:mubrm_tag/pages/sing_up_page.dart';
 import 'package:mubrm_tag/widgets/button_animation.dart';
-import 'package:mubrm_tag/widgets/chang_lang.dart';
+import 'package:mubrm_tag/widgets/chang_lang_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -261,6 +261,7 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
         style: kTextStyle,
       ),
     );
+    //ScaffoldMessenger.of(context).removeCurrentSnackBar();
     _scaffoldKey.currentState
       ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);
@@ -294,14 +295,12 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
       map['socialMediaSelected'] = socialMediaSelected;
       map['name'] = user.displayName;
       AppUser _user = AppUser.fromFirebaseEmailFirstTime(user, map);
-      Provider.of<UserModel>(context, listen: false).addUser(
+      Provider.of<UserModel>(context, listen: false).addUserToDatabase(
           user: _user,
           fail: (error) {
             _stopAnimation('GOOGLE');
             _showMessage(error.toString(), context);
-
-            printLog('fail addUser', error.toString());
-          },
+            },
           success: (AppUser appUser) {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (_) => HomePage()));
@@ -309,8 +308,6 @@ class _LoginPage extends State<LoginPage> with TickerProviderStateMixin {
           platformException: (error) {
             _stopAnimation('GOOGLE');
             _showMessage(error.toString(), context);
-
-            printLog('platformException addUser', error.toString());
           });
     }, fail: (error) {
       _stopAnimation('GOOGLE');

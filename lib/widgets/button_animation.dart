@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mubrm_tag/confing/general.dart';
 
-
 class StaggerAnimation extends StatelessWidget {
   final VoidCallback onTap;
   final String titleButton;
@@ -19,7 +18,7 @@ class StaggerAnimation extends StatelessWidget {
     this.height = 50,
   })  : buttonSqueezeanimation = Tween(
           begin: begin,
-          end: buttonType == 'accept' ?  48.0: 48.0,
+          end: buttonType == 'accept' ? 48.0 : 48.0,
         ).animate(
           CurvedAnimation(
             parent: buttonController,
@@ -84,23 +83,22 @@ class StaggerAnimation extends StatelessWidget {
 
   Widget singUpButton(context) {
     return Container(
-      width: 300,
+        width: 300,
         height: 48,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: Offset(0, 1), // changes position of shadow
-              ),
-            ],
-            gradient: LinearGradient(colors: [color1,color2]),
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-
-         ),
+          shape: BoxShape.rectangle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.6),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: Offset(0, 1), // changes position of shadow
+            ),
+          ],
+          gradient: LinearGradient(colors: [color1, color2]),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+        ),
         child: Text(
           titleButton,
           style: kTextStyle,
@@ -133,5 +131,4 @@ class StaggerAnimation extends StatelessWidget {
       ),
     );
   }
-
 }

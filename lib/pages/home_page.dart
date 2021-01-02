@@ -144,10 +144,11 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                       builder: (BuildContext context,
                           AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.data.data() != null) {
-                          Map<String, dynamic> map = snapshot.data.data()['socialMediaSelected'] ?? {};
-                          if (map != null)
-                          {
-                            SocialMedia me = SocialMedia.fromJsonFireStore(map, snapshot.data.id);
+                          Map<String, dynamic> map =
+                              snapshot.data.data()['socialMediaSelected'] ?? {};
+                          if (map != null) {
+                            SocialMedia me = SocialMedia.fromJsonFireStore(
+                                map, snapshot.data.id);
                             return InkWell(
                               child: HeaderItemIcon(
                                 media: me,
@@ -165,8 +166,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             );
                           }
-                        }
-                        else {
+                        } else {
                           return Container();
                         }
                       },
@@ -353,8 +353,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                     id: user.nameId,
                                   )),
                         );
-
-                        printLog('users', 'ok');
                       },
                     ),
                     InkWell(

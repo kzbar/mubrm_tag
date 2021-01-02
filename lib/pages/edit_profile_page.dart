@@ -340,7 +340,7 @@ class _EditProfilePage extends State<EditProfilePage>
                       image['image_path'] = user.picture['image_path'];
                       newMap['picture'] = image;
                     }
-                    Provider.of<UserModel>(context, listen: false).upData(
+                    Provider.of<UserModel>(context, listen: false).upDateUserInfo(
                         json: newMap,
                         success: (user) {
                           _stopAnimation();
@@ -380,7 +380,7 @@ class _EditProfilePage extends State<EditProfilePage>
 
   void makeProfilePublic(userId, value) async {
     Map<String, dynamic> data = {'id': userId, 'profileIsPublic': value,'password':''};
-    Provider.of<UserModel>(context, listen: false).upData(
+    Provider.of<UserModel>(context, listen: false).upDateUserInfo(
         json: data,
         success: (s) {},
         fail: (error) {},

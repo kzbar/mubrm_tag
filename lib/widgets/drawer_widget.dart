@@ -11,7 +11,7 @@ import 'package:mubrm_tag/generated/l10n.dart';
 import 'package:mubrm_tag/models/app_model.dart';
 import 'package:mubrm_tag/models/app_user.dart';
 import 'package:mubrm_tag/models/user_model.dart';
-import 'package:mubrm_tag/widgets/chang_lang.dart';
+import 'package:mubrm_tag/widgets/chang_lang_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';

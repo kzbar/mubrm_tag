@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 /// social media object
 class SocialMedia {
   SocialMedia(
@@ -42,8 +43,8 @@ class SocialMedia {
       socialAddedTo: json["socialAddedTo"],
       socialIsSelect: json["socialIsSelect"],
       value: json["value"],
-      messageAR: json['messageAR'] ,
-      messageEN: json['messageEN'] );
+      messageAR: json['messageAR'],
+      messageEN: json['messageEN']);
   factory SocialMedia.fromJsonFireStore(Map<String, dynamic> json, String id) =>
       SocialMedia(
           firebaseId: id,
@@ -56,8 +57,8 @@ class SocialMedia {
           socialAddedTo: json["socialAddedTo"],
           socialIsSelect: json["socialIsSelect"],
           value: json["value"],
-          messageAR: json['messageAR'] ,
-          messageEN: json['messageEN'] );
+          messageAR: json['messageAR'],
+          messageEN: json['messageEN']);
 
   Map<String, dynamic> toJson() => {
         "id": id,

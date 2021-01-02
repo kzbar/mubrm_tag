@@ -18,7 +18,8 @@ class SheetEditForSocialList extends StatefulWidget {
   final bool newAdd;
   final SocialMedia lastMediaSelected;
 
-  const SheetEditForSocialList({Key key, this.media, this.newAdd, this.lastMediaSelected})
+  const SheetEditForSocialList(
+      {Key key, this.media, this.newAdd, this.lastMediaSelected})
       : super(key: key);
   @override
   State<StatefulWidget> createState() {
@@ -42,7 +43,7 @@ class _SheetEdit extends State<SheetEditForSocialList> {
   @override
   Widget build(BuildContext context) {
     AppUser user = Provider.of<UserModel>(context, listen: false).userApp;
-    String lang = Provider.of<ModelApp>(context,listen: false).locale;
+    String lang = Provider.of<ModelApp>(context, listen: false).locale;
 
     return StreamBuilder(
       stream: FirebaseFirestore.instance
@@ -73,7 +74,7 @@ class _SheetEdit extends State<SheetEditForSocialList> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 24, right: 24,left: 24),
+                  margin: EdgeInsets.only(top: 24, right: 24, left: 24),
                   alignment: Alignment.centerRight,
                   child: Row(
                     children: [
@@ -96,10 +97,8 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                           children: [
                             GestureDetector(
                               child: Container(
-
                                 alignment: Alignment.center,
                                 child: Image.asset(
-
                                   'images/PNG/share.png',
                                   width: 36,
                                   height: 36,
@@ -107,19 +106,29 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                                 ),
                               ),
                               onTap: () {
-                                share(ref:S.of(context).shareMyAccountSocialMessage('${me.socialLinkWeb}${me.value}'),context: context);
+                                share(
+                                    ref: S
+                                        .of(context)
+                                        .shareMyAccountSocialMessage(
+                                            '${me.socialLinkWeb}${me.value}'),
+                                    context: context);
                               },
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 6),
-                              child: Text(S.of(context).shareMyAccountSocial(me.socialName),style: kTextStyle.copyWith(color: Colors.black,fontSize: 10),),
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .shareMyAccountSocial(me.socialName),
+                                style: kTextStyle.copyWith(
+                                    color: Colors.black, fontSize: 10),
+                              ),
                             )
                           ],
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                         ),
                       )
-
                     ],
                   ),
                 ),
@@ -149,19 +158,20 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                         child: FormBuilder(
                           key: _fbKey,
                           child: Container(
-                            margin: EdgeInsets.only(left: 12,right: 12),
+                            margin: EdgeInsets.only(left: 12, right: 12),
                             child: FormBuilderTextField(
-                            validators: [
-                              FormBuilderValidators.required(
-                                  errorText: 'هذا الحقل فارغ يرجى ملئ الحقل'),
-                            ],
-                            style: kTextStyleEditText,
-                            decoration:
-                            InputDecoration(border: InputBorder.none),
-                            attribute: 'value',
-                            controller: controller,
-                            // initialValue: widget.media.value,
-                          ),),
+                              validators: [
+                                FormBuilderValidators.required(
+                                    errorText: 'هذا الحقل فارغ يرجى ملئ الحقل'),
+                              ],
+                              style: kTextStyleEditText,
+                              decoration:
+                                  InputDecoration(border: InputBorder.none),
+                              attribute: 'value',
+                              controller: controller,
+                              // initialValue: widget.media.value,
+                            ),
+                          ),
                         ),
                       ),
                       IconButton(
@@ -192,8 +202,6 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                               });
                             });
                           }),
-
-
                       SizedBox(
                         width: 12,
                       ),
@@ -276,19 +284,19 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                     children: [
                       Expanded(
                           child: FlatButton(
-                            color: Colors.greenAccent,
-                            onPressed: () {
-                              _fbKey.currentState.save();
-                              if(_fbKey.currentState.validate()){
-                                String value = _fbKey.currentState.value['value'];
-                                _launchURL('${me.socialLinkWeb}$value');
-                              }
-                            },
-                            child: Text(
-                              S.of(context).openAccount,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          )),
+                        color: Colors.greenAccent,
+                        onPressed: () {
+                          _fbKey.currentState.save();
+                          if (_fbKey.currentState.validate()) {
+                            String value = _fbKey.currentState.value['value'];
+                            _launchURL('${me.socialLinkWeb}$value');
+                          }
+                        },
+                        child: Text(
+                          S.of(context).openAccount,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      )),
                     ],
                   ),
                 ),
@@ -320,20 +328,25 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                                   messageEN: widget.media.messageEN,
                                 );
                                 SocialMedia last = SocialMedia(
-                                  socialName: widget.lastMediaSelected.socialName,
+                                  socialName:
+                                      widget.lastMediaSelected.socialName,
                                   id: widget.lastMediaSelected.id,
-                                  socialIcon: widget.lastMediaSelected.socialIcon,
+                                  socialIcon:
+                                      widget.lastMediaSelected.socialIcon,
                                   socialIsSelect: false,
                                   socialAddedTo: true,
-                                  socialLinkAndroid:
-                                  widget.lastMediaSelected.socialLinkAndroid,
-                                  socialLinkWeb: widget.lastMediaSelected.socialLinkWeb,
-                                  socialLinkIos: widget.lastMediaSelected.socialLinkIos,
+                                  socialLinkAndroid: widget
+                                      .lastMediaSelected.socialLinkAndroid,
+                                  socialLinkWeb:
+                                      widget.lastMediaSelected.socialLinkWeb,
+                                  socialLinkIos:
+                                      widget.lastMediaSelected.socialLinkIos,
                                   value: _fbKey.currentState.value['value'],
                                   messageAR: widget.lastMediaSelected.messageAR,
                                   messageEN: widget.lastMediaSelected.messageEN,
                                 );
-                                setMediaDefault(user, media,last).then((value){
+                                setMediaDefault(user, media, last)
+                                    .then((value) {
                                   Navigator.of(context).pop();
                                 });
                               }
@@ -346,7 +359,6 @@ class _SheetEdit extends State<SheetEditForSocialList> {
                         ],
                       ),
                     )),
-
                 Container(
                   child: Text(
                     messageError,
@@ -420,24 +432,19 @@ class _SheetEdit extends State<SheetEditForSocialList> {
   }
 
   _launchURL(data) async {
-
     if (await canLaunch(data)) {
       try {
-        await launch(
-          data
-        );
+        await launch(data);
       } catch (error) {
         throw 'Could not launch $data';
 
-        setState(() {
-        });
+        setState(() {});
       }
     } else {
       await launch(data);
       throw 'Could not launch $data';
     }
   }
-
 
   Future<void> deleteSocial(userId, SocialMedia media) async {
     return await FirebaseFirestore.instance
@@ -448,12 +455,13 @@ class _SheetEdit extends State<SheetEditForSocialList> {
         .get()
         .then((value) {
       value.docs.forEach((element) async {
-        await element.reference.update({'socialAddedTo':false});
+        await element.reference.update({'socialAddedTo': false});
       });
     });
   }
 
-  Future<void> setMediaDefault(AppUser user ,SocialMedia media,SocialMedia lastMedia) async{
+  Future<void> setMediaDefault(
+      AppUser user, SocialMedia media, SocialMedia lastMedia) async {
     List<SocialMedia> list = [];
     list.add(media);
     list.add(lastMedia);
@@ -470,7 +478,7 @@ class _SheetEdit extends State<SheetEditForSocialList> {
       'socialMediaSelected': media.toJson()
     };
 
-   return await FirebaseFirestore.instance
+    return await FirebaseFirestore.instance
         .collection('users')
         .doc(user.id)
         .update(socialMediaSelected);

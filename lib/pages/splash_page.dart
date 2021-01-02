@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mubrm_tag/confing/general.dart';
 import 'package:mubrm_tag/models/app_model.dart';
-import 'package:mubrm_tag/pages/home_page.dart';
-import 'package:mubrm_tag/pages/login_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -26,13 +26,13 @@ class UserModel with ChangeNotifier {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   UserModel() {
-    try{
+    try {
       getUserFromLocal();
-    }catch(error){
+    } catch (error) {
       printLog('getUserFromLocal', error.toString());
     }
   }
-
+  /// function to save  user info in   device
   Future<void> saveUser(AppUser user) async {
     printLog('saveUser', '${user.id}');
     final LocalStorage storage = LocalStorage("mubrm_tag");
@@ -67,14 +67,12 @@ class UserModel with ChangeNotifier {
       fail(e);
     }
   }
-
-  Future<void> addUser({
-      AppUser user,
+  /// function to add   user  info to database
+  Future<void> addUserToDatabase(
+      {AppUser user,
       Function success,
       Function platformException,
       Function fail}) async {
-    printLog('addUser',user.toString());
-
     try {
       userApp = await _service.addUser(appUser: user);
       await saveUser(userApp);
@@ -109,7 +107,6 @@ class UserModel with ChangeNotifier {
     }
   }
 
-
   Future<void> forgetPassword(
       {Map<String, dynamic> json,
       Function success,
@@ -130,7 +127,8 @@ class UserModel with ChangeNotifier {
     try {
       final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       // Create a new credential
       final GoogleAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -146,13 +144,12 @@ class UserModel with ChangeNotifier {
       } catch (e) {
         fail(e);
       }
-
     } catch (error) {
       fail(error);
     }
   }
-
-  Future<void> upData(
+  /// update user info
+  Future<void> upDateUserInfo(
       {Map<String, dynamic> json,
       Function success,
       Function platformException,
@@ -193,8 +190,6 @@ class UserModel with ChangeNotifier {
       print(err);
     }
   }
-
-
 
   Future logOut({Function success}) async {
     userApp = null;
